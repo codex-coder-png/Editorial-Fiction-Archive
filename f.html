@@ -1,0 +1,2404 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Margin — Editorial Fiction Archive & Literary Reader</title>
+  
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Google Fonts: Lora, Playfair Display, Inter, JetBrains Mono, Lexend, EB Garamond -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500&family=Lexend:wght@300;400;500&family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,400;1,600&display=swap" rel="stylesheet">
+
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            marginBg: 'var(--color-bg)',
+            marginSurface: 'var(--color-surface)',
+            marginBorder: 'var(--color-border)',
+            marginText: 'var(--color-text)',
+            marginMuted: 'var(--color-muted)',
+            marginPrimary: 'var(--color-primary)',
+            marginPrimaryHover: 'var(--color-primary-hover)',
+            marginTagBg: 'var(--color-tag-bg)',
+            marginTagText: 'var(--color-tag-text)',
+          },
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            serif: ['EB Garamond', 'Lora', 'serif'],
+            display: ['Playfair Display', 'serif'],
+            mono: ['JetBrains Mono', 'monospace'],
+            dyslexic: ['Lexend', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    /* DYNAMIC CSS UI ENGINE TOKENS */
+    :root {
+      --color-bg: #fbf9f5;
+      --color-surface: #ffffff;
+      --color-border: #e5decf;
+      --color-text: #2b2523;
+      --color-muted: #786c66;
+      --color-primary: #991b1b;
+      --color-primary-hover: #7f1d1d;
+      --color-tag-bg: #f3eae0;
+      --color-tag-text: #7f1d1d;
+
+      /* READER TYPOGRAPHY VARIABLES */
+      --reader-font-family: 'EB Garamond', serif;
+      --reader-font-size: 1.25rem;
+      --reader-line-height: 1.85;
+      --reader-para-spacing: 1.6rem;
+      --reader-col-width: 48rem;
+      --reader-letter-spacing: normal;
+
+      /* HIGHLIGHT PALETTE */
+      --hl-amber: #fef08a;
+      --hl-rose: #fbcfe8;
+      --hl-mint: #bbf7d0;
+      --hl-sky: #bfdbfe;
+      --hl-lavender: #e9d5ff;
+    }
+
+    /* SMOOTH 1-SECOND COLOR SHIFTING FOR THEME CYCLING */
+    body, .margin-surface, .margin-card, header, main, nav, article, section, div, button, input, select, textarea, mark, svg {
+      transition: background-color 1s ease, color 1s ease, border-color 1s ease, fill 1s ease, stroke 1s ease, box-shadow 1s ease;
+    }
+
+    body {
+      background-color: var(--color-bg);
+      color: var(--color-text);
+      font-family: 'Inter', sans-serif;
+      overflow-x: hidden;
+    }
+
+    .margin-surface {
+      background-color: var(--color-surface);
+      border-color: var(--color-border);
+    }
+
+    /* Bookplate Spine Border Accent */
+    .bookplate-spine {
+      border-left: 5px solid var(--spine-color, var(--color-primary));
+    }
+
+    /* Crisp Tag Chips */
+    .margin-tag {
+      background-color: var(--color-tag-bg);
+      color: var(--color-tag-text);
+      border: 1px solid rgba(0, 0, 0, 0.05);
+      transition: filter 0.2s ease, transform 0.15s ease;
+    }
+    .margin-tag:hover {
+      filter: brightness(0.95);
+      transform: translateY(-1px);
+    }
+
+    /* Selective Blur Effect for Password Locked Content */
+    .locked-blur {
+      backdrop-filter: blur(14px);
+      filter: blur(9px);
+      user-select: none;
+      pointer-events: none;
+      opacity: 0.4;
+      transition: filter 0.4s ease, opacity 0.4s ease;
+    }
+
+    /* Reader Body Styling */
+    .reader-body {
+      font-family: var(--reader-font-family);
+      font-size: var(--reader-font-size);
+      line-height: var(--reader-line-height);
+      max-width: var(--reader-col-width);
+      letter-spacing: var(--reader-letter-spacing);
+    }
+
+    .reader-body p {
+      margin-bottom: var(--reader-para-spacing);
+      text-indent: 1.25rem;
+    }
+    .reader-body p:first-of-type {
+      text-indent: 0;
+    }
+
+    .reader-body blockquote {
+      border-left: 3px solid var(--color-primary);
+      padding-left: 1.25rem;
+      margin: 1.75rem 0;
+      font-style: italic;
+      color: var(--color-muted);
+    }
+
+    /* Dynamic Highlight Marks */
+    mark.hl-amber { background-color: var(--hl-amber); color: #0f172a; border-radius: 3px; padding: 1px 4px; cursor: pointer; }
+    mark.hl-rose { background-color: var(--hl-rose); color: #0f172a; border-radius: 3px; padding: 1px 4px; cursor: pointer; }
+    mark.hl-mint { background-color: var(--hl-mint); color: #0f172a; border-radius: 3px; padding: 1px 4px; cursor: pointer; }
+    mark.hl-sky { background-color: var(--hl-sky); color: #0f172a; border-radius: 3px; padding: 1px 4px; cursor: pointer; }
+    mark.hl-lavender { background-color: var(--hl-lavender); color: #0f172a; border-radius: 3px; padding: 1px 4px; cursor: pointer; }
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar { width: 7px; height: 7px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: rgba(120, 120, 120, 0.25); border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: rgba(120, 120, 120, 0.45); }
+  </style>
+</head>
+<body class="h-full flex flex-col min-h-screen">
+
+  <!-- TOP READING PROGRESS BAR -->
+  <div id="reading-progress-bar-container" class="fixed top-0 left-0 w-full h-1 bg-transparent z-50 pointer-events-none">
+    <div id="reading-progress-bar" class="h-full bg-[var(--color-primary)] w-0 transition-all duration-75"></div>
+  </div>
+
+  <!-- HEADER NAVIGATION -->
+  <header class="border-b border-[var(--color-border)] bg-[var(--color-surface)]/90 backdrop-blur-md sticky top-0 z-40 shadow-xs">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16">
+        
+        <!-- Logo & Brand Header -->
+        <div class="flex items-center space-x-3 cursor-pointer" onclick="app.navTo('feed')">
+          <!-- Custom Monogram SVG Logo -->
+          <svg class="w-9 h-9 text-[var(--color-primary)]" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M6 4C6 2.89543 6.89543 2 8 2H24C25.1046 2 26 2.89543 26 4V28C26 29.1046 25.1046 30 24 30H8C6.89543 30 6 29.1046 6 28V4Z" fill="var(--color-surface)" stroke="currentColor" stroke-width="2"/>
+            <path d="M10 2V30" stroke="currentColor" stroke-width="1.5" stroke-dasharray="2 2"/>
+            <path d="M14 8H22M14 13H20M14 18H22M14 23H18" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            <path d="M22 2V12L24.5 9.5L27 12V2H22Z" fill="var(--color-primary)"/>
+          </svg>
+          <div>
+            <span class="text-2xl font-bold font-serif tracking-tight text-[var(--color-text)]">Margin</span>
+            <span class="text-[10px] font-mono block text-[var(--color-muted)] -mt-1 uppercase tracking-widest">Editorial Fiction Archive</span>
+          </div>
+        </div>
+
+        <!-- Desktop Navigation -->
+        <nav class="hidden md:flex items-center space-x-1 text-xs font-semibold">
+          <button onclick="app.navTo('feed')" id="nav-btn-feed" class="px-3.5 py-2 rounded-xl hover:bg-black/5 dark:hover:bg-white/5 transition flex items-center space-x-2">
+            <i class="fa-solid fa-book-open text-xs"></i>
+            <span>Browse Library</span>
+          </button>
+          <button onclick="app.navTo('editor')" id="nav-btn-editor" class="px-3.5 py-2 rounded-xl hover:bg-black/5 dark:hover:bg-white/5 transition flex items-center space-x-2">
+            <i class="fa-solid fa-feather-pointed text-xs"></i>
+            <span>Publish Work</span>
+          </button>
+          <button onclick="app.navTo('profile')" id="nav-btn-profile" class="px-3.5 py-2 rounded-xl hover:bg-black/5 dark:hover:bg-white/5 transition flex items-center space-x-2">
+            <i class="fa-solid fa-bookmark text-xs"></i>
+            <span>Library Shelf</span>
+          </button>
+        </nav>
+
+        <!-- Right Header Tools -->
+        <div class="flex items-center space-x-2">
+          
+          <!-- SMOOTH 1-SECOND THEME SWITCHER BUTTON -->
+          <button onclick="app.cycleThemeNext()" class="px-3 py-1.5 rounded-xl border border-[var(--color-border)] hover:bg-black/5 dark:hover:bg-white/5 transition text-xs font-semibold flex items-center space-x-1.5" title="Cycle Theme (1s Color Shift)">
+            <i class="fa-solid fa-palette text-[var(--color-primary)]"></i>
+            <span id="theme-btn-label" class="hidden sm:inline">Archival Crimson</span>
+          </button>
+
+          <!-- Settings Trigger -->
+          <button onclick="app.openSettingsModal()" class="p-2 rounded-xl border border-[var(--color-border)] hover:bg-black/5 dark:hover:bg-white/5 transition text-xs" title="Settings Hub">
+            <i class="fa-solid fa-sliders text-[var(--color-muted)]"></i>
+          </button>
+
+          <!-- User Account Container -->
+          <div id="auth-status-container"></div>
+        </div>
+
+      </div>
+    </div>
+  </header>
+
+  <!-- FIRST START MANDATORY ACCOUNT GATE OVERLAY -->
+  <div id="welcome-auth-gate" class="fixed inset-0 z-50 bg-[var(--color-bg)] flex items-center justify-center p-4 overflow-y-auto">
+    <div class="margin-surface rounded-3xl max-w-md w-full p-6 sm:p-8 border border-[var(--color-border)] shadow-2xl space-y-6">
+      
+      <div class="text-center space-y-2">
+        <svg class="w-14 h-14 text-[var(--color-primary)] mx-auto" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M6 4C6 2.89543 6.89543 2 8 2H24C25.1046 2 26 2.89543 26 4V28C26 29.1046 25.1046 30 24 30H8C6.89543 30 6 29.1046 6 28V4Z" fill="var(--color-surface)" stroke="currentColor" stroke-width="2"/>
+          <path d="M10 2V30" stroke="currentColor" stroke-width="1.5" stroke-dasharray="2 2"/>
+          <path d="M14 8H22M14 13H20M14 18H22M14 23H18" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          <path d="M22 2V12L24.5 9.5L27 12V2H22Z" fill="var(--color-primary)"/>
+        </svg>
+        <h1 class="text-3xl font-bold font-serif tracking-tight text-[var(--color-text)]">Welcome to Margin</h1>
+        <p class="text-xs text-[var(--color-muted)] leading-relaxed">An editorial fiction archive & reader. Create or select a local profile to access manuscripts and publish work.</p>
+      </div>
+
+      <!-- Auth Gate Tabs -->
+      <div class="flex border-b border-[var(--color-border)] text-xs font-semibold">
+        <button onclick="app.switchAuthGateTab('signup')" id="gate-tab-signup" class="flex-1 pb-2 border-b-2 border-[var(--color-primary)] text-[var(--color-primary)]">Create Profile</button>
+        <button onclick="app.switchAuthGateTab('login')" id="gate-tab-login" class="flex-1 pb-2 border-b-2 border-transparent text-[var(--color-muted)]">Sign In</button>
+      </div>
+
+      <!-- Register Form -->
+      <form id="gate-signup-form" onsubmit="app.handleGateSignUp(event)" class="space-y-4 text-xs">
+        <div>
+          <label class="block font-bold mb-1">Username / Primary Handle <span class="text-rose-600">*</span></label>
+          <input type="text" id="gate-signup-username" required placeholder="e.g. QuillArchivist" class="w-full p-2.5 rounded-xl border border-[var(--color-border)] bg-black/5 dark:bg-black/30 outline-none focus:ring-2 focus:ring-[var(--color-primary)]">
+        </div>
+        <div>
+          <label class="block font-bold mb-1">Display Pen Name (Pseudonym)</label>
+          <input type="text" id="gate-signup-display" placeholder="e.g. E. H. Vance" class="w-full p-2.5 rounded-xl border border-[var(--color-border)] bg-black/5 dark:bg-black/30 outline-none">
+        </div>
+        <div>
+          <label class="block font-bold mb-1">Passphrase / PIN <span class="text-rose-600">*</span></label>
+          <input type="password" id="gate-signup-password" required placeholder="Create passphrase..." class="w-full p-2.5 rounded-xl border border-[var(--color-border)] bg-black/5 dark:bg-black/30 outline-none">
+        </div>
+        <button type="submit" class="w-full py-3 rounded-xl bg-[var(--color-primary)] text-white font-bold hover:opacity-90 transition shadow-md text-xs">
+          Create Account & Access Archive
+        </button>
+      </form>
+
+      <!-- Log In Form -->
+      <form id="gate-login-form" onsubmit="app.handleGateLogIn(event)" class="hidden space-y-4 text-xs">
+        <div>
+          <label class="block font-bold mb-1">Stored Profiles</label>
+          <select id="gate-login-account-select" onchange="app.fillGateLoginUser(this.value)" class="w-full p-2.5 rounded-xl border border-[var(--color-border)] bg-black/5 dark:bg-black/30 outline-none mb-2">
+          </select>
+        </div>
+        <div>
+          <label class="block font-bold mb-1">Username</label>
+          <input type="text" id="gate-login-username" required placeholder="Username..." class="w-full p-2.5 rounded-xl border border-[var(--color-border)] bg-black/5 dark:bg-black/30 outline-none">
+        </div>
+        <div>
+          <label class="block font-bold mb-1">Passphrase</label>
+          <input type="password" id="gate-login-password" required placeholder="Password..." class="w-full p-2.5 rounded-xl border border-[var(--color-border)] bg-black/5 dark:bg-black/30 outline-none">
+        </div>
+        <p id="gate-login-error" class="text-rose-500 font-semibold hidden text-[11px]">Invalid credentials provided.</p>
+        <button type="submit" class="w-full py-3 rounded-xl bg-[var(--color-primary)] text-white font-bold hover:opacity-90 transition shadow-md text-xs">
+          Sign In
+        </button>
+      </form>
+
+      <!-- Import Story or JSON Backup -->
+      <div class="pt-4 border-t border-[var(--color-border)] text-center space-y-2 text-xs">
+        <span class="text-[11px] text-[var(--color-muted)]">Importing a shared manuscript or JSON backup?</span>
+        <div class="flex justify-center gap-2">
+          <label class="px-3 py-1.5 rounded-xl border border-[var(--color-border)] hover:bg-black/5 cursor-pointer font-semibold text-xs">
+            <i class="fa-solid fa-file-import text-sky-600 mr-1"></i>
+            <span>Import JSON</span>
+            <input type="file" accept=".json" onchange="app.importArchiveJSON(event)" class="hidden">
+          </label>
+          <button onclick="app.promptPasteShareCode()" class="px-3 py-1.5 rounded-xl border border-[var(--color-border)] hover:bg-black/5 font-semibold text-xs">
+            <i class="fa-solid fa-link text-emerald-600 mr-1"></i>
+            <span>Paste Shared Payload</span>
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- CONTINUED READING BANNER -->
+  <div id="continue-reading-banner" class="hidden bg-gradient-to-r from-amber-900/30 via-red-900/30 to-purple-900/30 border-b border-amber-600/30 px-4 py-2 text-xs">
+    <div class="max-w-7xl mx-auto flex items-center justify-between">
+      <div class="flex items-center space-x-2 truncate">
+        <span class="px-2 py-0.5 rounded bg-amber-500/20 text-amber-700 dark:text-amber-300 font-bold uppercase text-[10px]">Saved Reading Place</span>
+        <span id="continue-banner-title" class="font-semibold truncate">Manuscript Title</span>
+        <span id="continue-banner-progress" class="text-[var(--color-muted)] font-mono">(45% complete)</span>
+      </div>
+      <button onclick="app.resumeActiveBookmark()" class="px-3 py-1 rounded-lg bg-[var(--color-primary)] text-white font-bold hover:opacity-90 text-xs">
+        Resume Reading
+      </button>
+    </div>
+  </div>
+
+  <!-- MAIN CONTAINER -->
+  <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6">
+
+    <!-- VIEW 1: LIBRARY MAIN FEED & SEARCH -->
+    <section id="view-feed" class="space-y-6">
+      
+      <!-- Top Search & Controls Panel -->
+      <div class="margin-surface rounded-3xl p-5 sm:p-6 border shadow-xs space-y-4">
+        
+        <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+          <div>
+            <h2 class="text-2xl sm:text-3xl font-bold font-serif tracking-tight text-[var(--color-text)]">Archive Manuscripts</h2>
+            <p class="text-xs text-[var(--color-muted)] mt-0.5">Filter by canonical tags, content warnings, ratings, or keyword search.</p>
+          </div>
+
+          <!-- Search Bar -->
+          <div class="flex flex-1 max-w-xl gap-2">
+            <div class="relative flex-1">
+              <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-3 text-[var(--color-muted)] text-xs"></i>
+              <input type="text" id="feed-search-input" oninput="app.renderFeed()" placeholder="Search title, summary, author, fandom, tags..." 
+                class="w-full pl-9 pr-4 py-2 text-xs rounded-xl border border-[var(--color-border)] bg-black/5 dark:bg-black/20 outline-none focus:ring-2 focus:ring-[var(--color-primary)]">
+            </div>
+            <select id="feed-sort-select" onchange="app.renderFeed()" class="px-3 py-2 text-xs rounded-xl border border-[var(--color-border)] bg-black/5 dark:bg-black/20 outline-none">
+              <option value="newest">Newest Additions</option>
+              <option value="kudos">Most Kudos</option>
+              <option value="words">Word Count</option>
+              <option value="title">Title (A-Z)</option>
+            </select>
+            <button onclick="app.toggleFilterDrawer()" class="px-3.5 py-2 text-xs rounded-xl border border-[var(--color-border)] hover:bg-black/5 transition flex items-center space-x-1.5 font-semibold">
+              <i class="fa-solid fa-filter text-[var(--color-primary)]"></i>
+              <span>Filters</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Filter Drawer -->
+        <div id="advanced-filter-drawer" class="hidden pt-4 border-t border-[var(--color-border)] space-y-4 text-xs">
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            
+            <div class="space-y-2">
+              <div class="flex justify-between items-center">
+                <label class="font-bold">Include Tags</label>
+                <button onclick="app.toggleIncludeMode()" id="include-mode-btn" class="text-[10px] font-mono px-2 py-0.5 rounded bg-black/10 dark:bg-white/10">
+                  Mode: AND
+                </button>
+              </div>
+              <input type="text" id="include-tag-input" placeholder="Type tag & press Enter..." 
+                onkeydown="app.handleFilterTagAdd(event, 'include')"
+                class="w-full p-2 rounded-xl border border-[var(--color-border)] bg-black/5 dark:bg-black/30 outline-none text-xs">
+              <div id="include-tags-list" class="flex flex-wrap gap-1.5 pt-1"></div>
+            </div>
+
+            <div class="space-y-2">
+              <label class="font-bold text-rose-600">Exclude Tags (Muted / Blacklist)</label>
+              <input type="text" id="exclude-tag-input" placeholder="Type tag to exclude & press Enter..." 
+                onkeydown="app.handleFilterTagAdd(event, 'exclude')"
+                class="w-full p-2 rounded-xl border border-rose-900/40 bg-black/5 dark:bg-black/30 outline-none text-xs">
+              <div id="exclude-tags-list" class="flex flex-wrap gap-1.5 pt-1"></div>
+            </div>
+
+            <div class="space-y-3">
+              <div>
+                <label class="font-bold block mb-1">Completion Status</label>
+                <select id="filter-status-select" onchange="app.renderFeed()" class="w-full p-2 rounded-xl border border-[var(--color-border)] bg-black/5 dark:bg-black/30 outline-none">
+                  <option value="all">All Works (Complete & WIP)</option>
+                  <option value="complete">Complete Only</option>
+                  <option value="wip">In Progress (WIP) Only</option>
+                </select>
+              </div>
+              <div>
+                <label class="font-bold block mb-1">Minimum Word Count</label>
+                <input type="number" id="filter-min-words" placeholder="0" oninput="app.renderFeed()" class="w-full p-2 rounded-xl border border-[var(--color-border)] bg-black/5 dark:bg-black/30 outline-none">
+              </div>
+            </div>
+
+          </div>
+
+          <div class="flex justify-between items-center pt-2 border-t border-[var(--color-border)] text-[11px]">
+            <span class="text-[var(--color-muted)]">Auto-canonical wrangling active.</span>
+            <button onclick="app.resetAllFilters()" class="text-rose-600 hover:underline font-semibold">Reset Filters</button>
+          </div>
+        </div>
+
+        <!-- Canonical Tags Quick Bar -->
+        <div class="flex items-center space-x-2 overflow-x-auto pb-1 text-xs">
+          <span class="text-[var(--color-muted)] font-mono text-[11px] whitespace-nowrap"><i class="fa-solid fa-tags text-[var(--color-primary)] mr-1"></i> Tags:</span>
+          <div id="popular-canonical-tags-list" class="flex items-center space-x-1.5"></div>
+        </div>
+
+      </div>
+
+      <!-- MAIN FEED WORKS LIST -->
+      <div id="works-feed-container" class="space-y-5"></div>
+
+    </section>
+
+    <!-- VIEW 2: DISTRACTION-FREE LITERARY READER -->
+    <section id="view-reader" class="hidden space-y-6">
+      
+      <!-- Reader Header Bar -->
+      <div class="flex flex-wrap items-center justify-between gap-3 pb-4 border-b border-[var(--color-border)]">
+        <button onclick="app.navTo('feed')" class="text-xs font-semibold px-3.5 py-2 rounded-xl margin-surface border hover:bg-black/5 transition flex items-center space-x-1.5">
+          <i class="fa-solid fa-arrow-left text-[var(--color-muted)]"></i>
+          <span>Library Feed</span>
+        </button>
+
+        <!-- Chapter Nav Dropdown -->
+        <div id="reader-chapter-select-container" class="hidden flex items-center space-x-2">
+          <span class="text-xs font-bold text-[var(--color-muted)]">Chapter:</span>
+          <select id="reader-chapter-select" onchange="app.switchReaderChapter(this.value)" class="px-3 py-1.5 text-xs rounded-xl margin-surface border font-semibold outline-none">
+          </select>
+        </div>
+
+        <div class="flex items-center space-x-2">
+          <button onclick="app.shareWorkFromReader()" class="px-3 py-2 text-xs rounded-xl margin-surface border hover:bg-black/5 transition font-semibold flex items-center space-x-1.5 text-emerald-600">
+            <i class="fa-solid fa-share-nodes"></i>
+            <span>Share</span>
+          </button>
+          <button onclick="app.dropBookmarkMarker()" class="px-3 py-2 text-xs rounded-xl bg-[var(--color-primary)] text-white hover:opacity-90 transition font-bold flex items-center space-x-1.5">
+            <i class="fa-solid fa-bookmark"></i>
+            <span>Save Marker</span>
+          </button>
+          <button onclick="app.toggleAnnotationsDrawer()" class="px-3 py-2 text-xs rounded-xl margin-surface border hover:bg-black/5 transition font-semibold flex items-center space-x-1.5">
+            <i class="fa-solid fa-highlighter text-amber-500"></i>
+            <span id="reader-highlights-count">Notes (0)</span>
+          </button>
+          <button onclick="app.toggleReaderTypographyPanel()" class="p-2 text-xs rounded-xl margin-surface border hover:bg-black/5 transition" title="Reading Controls">
+            <i class="fa-solid fa-font text-[var(--color-muted)]"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- TYPOGRAPHY CONTROL PANEL -->
+      <div id="reader-typography-panel" class="hidden margin-surface p-4 rounded-2xl border shadow-lg space-y-4">
+        <div class="text-[10px] font-bold uppercase tracking-wider text-[var(--color-muted)]">Literary Typography Engine</div>
+        <div class="grid grid-cols-1 sm:grid-cols-4 gap-4 text-xs">
+          <div>
+            <label class="block font-medium mb-1">Font Family</label>
+            <select onchange="app.updateReaderTypography('font', this.value)" class="w-full p-2 rounded-xl border border-[var(--color-border)] bg-black/5 dark:bg-black/20">
+              <option value="'EB Garamond', serif">EB Garamond (Literary Classic)</option>
+              <option value="'Lora', serif">Lora Serif</option>
+              <option value="'Inter', sans-serif">Inter Humanist Sans</option>
+              <option value="'Playfair Display', serif">Playfair Display</option>
+              <option value="'JetBrains Mono', monospace">Monospace</option>
+              <option value="'Lexend', sans-serif">Lexend (Dyslexia Friendly)</option>
+            </select>
+          </div>
+          <div>
+            <label class="block font-medium mb-1">Font Size</label>
+            <input type="range" min="15" max="30" value="20" oninput="app.updateReaderTypography('size', this.value + 'px')" class="w-full">
+          </div>
+          <div>
+            <label class="block font-medium mb-1">Line Spacing</label>
+            <select onchange="app.updateReaderTypography('lineHeight', this.value)" class="w-full p-2 rounded-xl border border-[var(--color-border)] bg-black/5 dark:bg-black/20">
+              <option value="1.6">Compact (1.6)</option>
+              <option value="1.85" selected>Book Standard (1.85)</option>
+              <option value="2.1">Relaxed (2.1)</option>
+            </select>
+          </div>
+          <div>
+            <label class="block font-medium mb-1">Reading Column Width</label>
+            <select onchange="app.updateReaderTypography('width', this.value)" class="w-full p-2 rounded-xl border border-[var(--color-border)] bg-black/5 dark:bg-black/20">
+              <option value="42rem">Narrow (42rem)</option>
+              <option value="48rem" selected>Standard (48rem)</option>
+              <option value="58rem">Wide (58rem)</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- MAIN READER CARD -->
+      <article id="reader-card-wrapper" class="margin-surface rounded-3xl p-6 sm:p-12 border shadow-xl space-y-8">
+        
+        <!-- AO3-Inspired Metadata Header -->
+        <div id="reader-meta-header" class="text-center space-y-4 border-b border-[var(--color-border)] pb-8"></div>
+
+        <!-- Custom Tag Chips (100% Crisp) -->
+        <div id="reader-tags-box" class="flex flex-wrap justify-center gap-1.5 py-2"></div>
+
+        <!-- Password Lock Overlay -->
+        <div id="reader-lock-overlay" class="hidden my-8 p-8 border-2 border-dashed border-rose-900/40 rounded-3xl text-center space-y-4 bg-rose-950/10">
+          <div class="w-14 h-14 rounded-full bg-rose-900/30 text-rose-500 flex items-center justify-center mx-auto text-2xl">
+            <i class="fa-solid fa-lock"></i>
+          </div>
+          <div>
+            <h3 class="text-xl font-bold font-serif">Password Protected Story</h3>
+            <p id="reader-lock-hint" class="text-xs text-[var(--color-muted)] mt-1">Hint required.</p>
+          </div>
+          <div class="flex justify-center max-w-xs mx-auto gap-2">
+            <input type="password" id="reader-password-input" placeholder="Enter passphrase..." 
+              onkeydown="if(event.key==='Enter') app.unlockReaderWork()"
+              class="px-3.5 py-2 text-xs rounded-xl border border-[var(--color-border)] bg-black/10 dark:bg-black/40 outline-none flex-1">
+            <button onclick="app.unlockReaderWork()" class="px-4 py-2 bg-[var(--color-primary)] text-white text-xs font-bold rounded-xl hover:opacity-90">Unlock</button>
+          </div>
+          <p id="reader-password-error" class="text-xs text-rose-500 hidden font-semibold">Incorrect password.</p>
+        </div>
+
+        <!-- Top Author Notes -->
+        <div id="reader-author-notes-top" class="hidden p-4 rounded-2xl bg-black/5 dark:bg-black/30 border border-[var(--color-border)] text-xs space-y-1">
+          <div class="font-bold uppercase tracking-wider text-[10px] text-[var(--color-primary)]">Author's Note</div>
+          <div id="reader-author-notes-top-text" class="italic"></div>
+        </div>
+
+        <!-- READER BODY TEXT -->
+        <div id="reader-text-container" class="reader-body mx-auto select-text"></div>
+
+        <!-- Bottom Author Notes -->
+        <div id="reader-author-notes-bottom" class="hidden p-4 rounded-2xl bg-black/5 dark:bg-black/30 border border-[var(--color-border)] text-xs space-y-1">
+          <div class="font-bold uppercase tracking-wider text-[10px] text-[var(--color-primary)]">End Note</div>
+          <div id="reader-author-notes-bottom-text" class="italic"></div>
+        </div>
+
+        <!-- Kudos Toggle & Chapter Bottom Navigation -->
+        <div id="reader-bottom-nav" class="flex items-center justify-between pt-6 border-t border-[var(--color-border)] text-xs">
+          <!-- SINGLE KUDOS TOGGLE BUTTON -->
+          <button onclick="app.toggleKudos()" id="kudos-btn" class="px-4 py-2 rounded-xl border border-rose-900/40 bg-rose-950/10 text-rose-600 dark:text-rose-400 font-bold hover:scale-105 transition flex items-center space-x-2">
+            <i id="kudos-icon" class="fa-regular fa-heart"></i>
+            <span id="reader-kudos-text">Kudos (0)</span>
+          </button>
+          
+          <div id="reader-prev-next-btns" class="flex items-center space-x-2"></div>
+        </div>
+
+      </article>
+    </section>
+
+    <!-- VIEW 3: PUBLISHING STUDIO EDITOR -->
+    <section id="view-editor" class="hidden space-y-6 max-w-4xl mx-auto">
+      <div class="margin-surface rounded-3xl p-6 sm:p-10 border shadow-xl space-y-6">
+        
+        <div class="flex items-center justify-between border-b border-[var(--color-border)] pb-4">
+          <div>
+            <h2 id="editor-heading" class="text-2xl font-bold font-serif">Publishing Studio</h2>
+            <p class="text-xs text-[var(--color-muted)]">Craft multi-chapter stories with bookplate cover accents and tags.</p>
+          </div>
+          <div class="flex items-center space-x-3 text-xs font-mono">
+            <span id="editor-draft-status" class="text-[var(--color-muted)]">Draft saved</span>
+            <span id="editor-word-count-badge" class="px-2.5 py-1 rounded-lg bg-black/10 dark:bg-white/10 font-bold">0 words</span>
+          </div>
+        </div>
+
+        <!-- Chapter Tab Bar (Multi-Chapter Support) -->
+        <div class="space-y-2">
+          <div class="flex items-center justify-between">
+            <label class="block text-xs font-bold uppercase tracking-wider text-[var(--color-muted)]">Story Chapters</label>
+            <button onclick="app.addNewEditorChapter()" class="text-xs text-[var(--color-primary)] font-bold hover:underline flex items-center space-x-1">
+              <i class="fa-solid fa-plus"></i>
+              <span>Add Chapter</span>
+            </button>
+          </div>
+          <div id="editor-chapters-tabs-list" class="flex items-center space-x-2 overflow-x-auto pb-1 text-xs"></div>
+        </div>
+
+        <!-- Form Fields Grid -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
+          
+          <!-- Title -->
+          <div class="sm:col-span-2">
+            <label class="block font-bold uppercase tracking-wider mb-1">Story Title <span class="text-rose-600">*</span></label>
+            <input type="text" id="edit-title" placeholder="e.g. The Glass Archivist" class="w-full px-4 py-2.5 rounded-xl border border-[var(--color-border)] bg-black/5 dark:bg-black/30 text-sm outline-none focus:ring-2 focus:ring-[var(--color-primary)]">
+          </div>
+
+          <!-- Cover Spine Accent Color Picker -->
+          <div>
+            <label class="block font-bold uppercase tracking-wider mb-1">Bookplate Spine Color Accent</label>
+            <div class="flex items-center space-x-2">
+              <input type="color" id="edit-spine-color" value="#991b1b" class="w-9 h-9 rounded-xl border-0 cursor-pointer">
+              <span class="text-[11px] text-[var(--color-muted)]">Color strip displayed on story cards</span>
+            </div>
+          </div>
+
+          <!-- Fandom / Collection -->
+          <div>
+            <label class="block font-bold uppercase tracking-wider mb-1">Fandom / Universe</label>
+            <input type="text" id="edit-fandom" placeholder="e.g. Original Fiction..." class="w-full px-3.5 py-2 rounded-xl border border-[var(--color-border)] bg-black/5 dark:bg-black/30 outline-none">
+          </div>
+
+          <!-- Pen Name (Pseud) -->
+          <div>
+            <label class="block font-bold uppercase tracking-wider mb-1">Author Pen Name (Pseud)</label>
+            <select id="edit-pseud-select" class="w-full px-3.5 py-2 rounded-xl border border-[var(--color-border)] bg-black/5 dark:bg-black/30 outline-none"></select>
+          </div>
+
+          <!-- Rating -->
+          <div>
+            <label class="block font-bold uppercase tracking-wider mb-1">Rating</label>
+            <select id="edit-rating" class="w-full px-3.5 py-2 rounded-xl border border-[var(--color-border)] bg-black/5 dark:bg-black/30 outline-none">
+              <option value="General Audiences">General Audiences</option>
+              <option value="Teen And Up Audiences">Teen And Up Audiences</option>
+              <option value="Mature">Mature</option>
+              <option value="Explicit">Explicit</option>
+              <option value="Not Rated">Not Rated</option>
+            </select>
+          </div>
+
+          <!-- Category -->
+          <div>
+            <label class="block font-bold uppercase tracking-wider mb-1">Category</label>
+            <select id="edit-category" class="w-full px-3.5 py-2 rounded-xl border border-[var(--color-border)] bg-black/5 dark:bg-black/30 outline-none">
+              <option value="Gen">Gen (General / Non-romantic)</option>
+              <option value="F/M">F/M (Female/Male)</option>
+              <option value="M/M">M/M (Male/Male)</option>
+              <option value="F/F">F/F (Female/Female)</option>
+              <option value="Multi">Multi</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+
+          <!-- Content Warning -->
+          <div>
+            <label class="block font-bold uppercase tracking-wider mb-1">Archive Warning</label>
+            <select id="edit-warning" class="w-full px-3.5 py-2 rounded-xl border border-[var(--color-border)] bg-black/5 dark:bg-black/30 outline-none">
+              <option value="No Archive Warnings Apply">No Archive Warnings Apply</option>
+              <option value="Creator Chose Not To Use Archive Warnings">Creator Chose Not To Use Warnings</option>
+              <option value="Graphic Depictions Of Violence">Graphic Depictions Of Violence</option>
+              <option value="Major Character Death">Major Character Death</option>
+            </select>
+          </div>
+
+          <!-- Completion Status -->
+          <div>
+            <label class="block font-bold uppercase tracking-wider mb-1">Completion Status</label>
+            <select id="edit-is-complete" class="w-full px-3.5 py-2 rounded-xl border border-[var(--color-border)] bg-black/5 dark:bg-black/30 outline-none">
+              <option value="true">Complete Story (1/1)</option>
+              <option value="false">In Progress (WIP)</option>
+            </select>
+          </div>
+
+          <!-- Password Lock -->
+          <div>
+            <label class="block font-bold uppercase tracking-wider mb-1">Optional Password Lock</label>
+            <input type="password" id="edit-password" placeholder="Passphrase (leave blank for public)" class="w-full px-3.5 py-2 rounded-xl border border-[var(--color-border)] bg-black/5 dark:bg-black/30 outline-none">
+          </div>
+
+          <div class="sm:col-span-2">
+            <label class="block font-bold uppercase tracking-wider mb-1">Password Hint (Publicly visible)</label>
+            <input type="text" id="edit-password-hint" placeholder="Hint for readers..." class="w-full px-3.5 py-2 rounded-xl border border-[var(--color-border)] bg-black/5 dark:bg-black/30 outline-none">
+          </div>
+
+          <!-- Tag Chips Editor -->
+          <div class="sm:col-span-2 space-y-2">
+            <label class="block font-bold uppercase tracking-wider">Custom Categorized Tags</label>
+            <div class="flex flex-wrap gap-1.5 p-2.5 rounded-xl border border-[var(--color-border)] bg-black/5 dark:bg-black/30 min-h-[46px] items-center" id="editor-tag-container">
+              <div id="editor-tag-chips" class="flex flex-wrap gap-1.5"></div>
+              <input type="text" id="editor-tag-input" placeholder="Type tag & press Enter or comma..." class="flex-1 min-w-[180px] bg-transparent outline-none px-2 py-1">
+            </div>
+          </div>
+
+          <!-- Anonymous Checkbox -->
+          <div class="sm:col-span-2 margin-surface p-4 rounded-xl border flex items-center justify-between">
+            <div>
+              <div class="font-bold">Publish as Anonymous Writer</div>
+              <div class="text-[11px] text-[var(--color-muted)]">Hides pen name publicly while maintaining full account ownership.</div>
+            </div>
+            <input type="checkbox" id="edit-anonymous" class="w-5 h-5 accent-[var(--color-primary)] cursor-pointer">
+          </div>
+
+          <!-- Summary -->
+          <div class="sm:col-span-2">
+            <label class="block font-bold uppercase tracking-wider mb-1">Work Summary</label>
+            <textarea id="edit-summary" rows="3" placeholder="Provide a concise synopsis..." class="w-full p-3.5 rounded-xl border border-[var(--color-border)] bg-black/5 dark:bg-black/30 text-xs outline-none focus:ring-2 focus:ring-[var(--color-primary)]"></textarea>
+          </div>
+
+          <!-- Active Chapter Title & Notes -->
+          <div class="sm:col-span-2 space-y-3 pt-2 border-t border-[var(--color-border)]">
+            <div class="font-bold text-xs uppercase tracking-wider text-[var(--color-primary)]">Active Chapter Metadata</div>
+            <input type="text" id="edit-chapter-title" placeholder="Chapter Title (e.g. Chapter 1: The First Tome)..." class="w-full p-2.5 rounded-xl border border-[var(--color-border)] bg-black/5 dark:bg-black/30 outline-none">
+            <textarea id="edit-notes-top" rows="2" placeholder="Opening Author Note..." class="w-full p-2.5 rounded-xl border border-[var(--color-border)] bg-black/5 dark:bg-black/30 outline-none"></textarea>
+            <textarea id="edit-notes-bottom" rows="2" placeholder="End Author Note..." class="w-full p-2.5 rounded-xl border border-[var(--color-border)] bg-black/5 dark:bg-black/30 outline-none"></textarea>
+          </div>
+
+        </div>
+
+        <!-- Rich Text Toolbar & Content Window -->
+        <div class="space-y-2">
+          <div class="flex items-center justify-between">
+            <label class="block text-xs font-bold uppercase tracking-wider">Chapter Body Text</label>
+            <button type="button" onclick="app.toggleSymbolPalette()" class="text-xs text-[var(--color-primary)] hover:underline font-bold flex items-center space-x-1">
+              <i class="fa-solid fa-icons"></i>
+              <span>Special Symbols & Glyphs</span>
+            </button>
+          </div>
+
+          <!-- Toolbar -->
+          <div class="flex flex-wrap items-center gap-1 p-2 rounded-t-xl border border-b-0 border-[var(--color-border)] bg-black/5 dark:bg-white/5">
+            <button onclick="app.formatEditorDoc('bold')" class="p-1.5 w-8 h-8 rounded hover:bg-black/10 font-bold" title="Bold">B</button>
+            <button onclick="app.formatEditorDoc('italic')" class="p-1.5 w-8 h-8 rounded hover:bg-black/10 italic" title="Italic">I</button>
+            <button onclick="app.formatEditorDoc('underline')" class="p-1.5 w-8 h-8 rounded hover:bg-black/10 underline" title="Underline">U</button>
+            <button onclick="app.formatEditorDoc('strikeThrough')" class="p-1.5 w-8 h-8 rounded hover:bg-black/10 line-through" title="Strikethrough">S</button>
+            <div class="h-4 w-px bg-[var(--color-border)] mx-1"></div>
+            <button onclick="app.formatEditorDoc('formatBlock', '<h2>')" class="p-1.5 rounded hover:bg-black/10 text-xs font-bold">H2</button>
+            <button onclick="app.formatEditorDoc('formatBlock', '<h3>')" class="p-1.5 rounded hover:bg-black/10 text-xs font-bold">H3</button>
+            <button onclick="app.formatEditorDoc('formatBlock', '<blockquote>')" class="p-1.5 w-8 h-8 rounded hover:bg-black/10"><i class="fa-solid fa-quote-left"></i></button>
+            <button onclick="app.insertSceneDivider()" class="px-2 py-1 rounded hover:bg-black/10 text-xs font-semibold" title="Scene Divider">✦ ✦ ✦</button>
+          </div>
+
+          <!-- Symbols Drawer -->
+          <div id="symbols-palette-drawer" class="hidden p-3 rounded-xl border border-[var(--color-border)] bg-black/5 dark:bg-black/30 text-xs space-y-2">
+            <div class="font-bold text-[11px] text-[var(--color-primary)]">Click symbol to insert at cursor:</div>
+            <div class="flex flex-wrap gap-1.5 font-serif text-base">
+              <button onclick="app.insertGlyph('—')" class="px-2 py-0.5 rounded bg-black/10 hover:bg-black/20" title="Em-Dash">—</button>
+              <button onclick="app.insertGlyph('–')" class="px-2 py-0.5 rounded bg-black/10 hover:bg-black/20" title="En-Dash">–</button>
+              <button onclick="app.insertGlyph('…')" class="px-2 py-0.5 rounded bg-black/10 hover:bg-black/20">…</button>
+              <button onclick="app.insertGlyph('“')" class="px-2 py-0.5 rounded bg-black/10 hover:bg-black/20">“</button>
+              <button onclick="app.insertGlyph('”')" class="px-2 py-0.5 rounded bg-black/10 hover:bg-black/20">”</button>
+              <button onclick="app.insertGlyph('‘')" class="px-2 py-0.5 rounded bg-black/10 hover:bg-black/20">‘</button>
+              <button onclick="app.insertGlyph('’')" class="px-2 py-0.5 rounded bg-black/10 hover:bg-black/20">’</button>
+              <button onclick="app.insertGlyph('†')" class="px-2 py-0.5 rounded bg-black/10 hover:bg-black/20">†</button>
+              <button onclick="app.insertGlyph('‡')" class="px-2 py-0.5 rounded bg-black/10 hover:bg-black/20">‡</button>
+              <button onclick="app.insertGlyph('§')" class="px-2 py-0.5 rounded bg-black/10 hover:bg-black/20">§</button>
+              <button onclick="app.insertGlyph('¶')" class="px-2 py-0.5 rounded bg-black/10 hover:bg-black/20">¶</button>
+              <button onclick="app.insertGlyph('✦')" class="px-2 py-0.5 rounded bg-black/10 hover:bg-black/20">✦</button>
+              <button onclick="app.insertGlyph('★')" class="px-2 py-0.5 rounded bg-black/10 hover:bg-black/20">★</button>
+              <button onclick="app.insertGlyph('❦')" class="px-2 py-0.5 rounded bg-black/10 hover:bg-black/20">❦</button>
+              <button onclick="app.insertGlyph('⚜')" class="px-2 py-0.5 rounded bg-black/10 hover:bg-black/20">⚜</button>
+            </div>
+          </div>
+
+          <!-- Contenteditable Editor -->
+          <div id="editor-body-content" contenteditable="true" oninput="app.onEditorInput()" 
+            class="min-h-[380px] p-5 rounded-b-xl border border-[var(--color-border)] bg-black/5 dark:bg-black/30 reader-body focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]">
+            <p>Paste or write chapter content here...</p>
+          </div>
+        </div>
+
+        <!-- Action Bar -->
+        <div class="flex items-center justify-end space-x-3 pt-4 border-t border-[var(--color-border)]">
+          <button onclick="app.navTo('feed')" class="px-4 py-2 rounded-xl text-xs font-semibold hover:underline">Discard</button>
+          <button onclick="app.savePublishedWork()" class="px-6 py-2.5 rounded-xl bg-[var(--color-primary)] text-white font-bold text-xs hover:opacity-90 shadow-lg">
+            Publish Manuscript
+          </button>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- VIEW 4: USER PROFILE & LIBRARY SHELF -->
+    <section id="view-profile" class="hidden space-y-6 max-w-5xl mx-auto">
+      <div id="profile-container" class="margin-surface rounded-3xl p-6 sm:p-10 border shadow-xl space-y-6"></div>
+    </section>
+
+  </main>
+
+  <!-- STORY SHARE MODAL -->
+  <div id="share-modal" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-xs hidden flex items-center justify-center p-4">
+    <div class="margin-surface rounded-3xl max-w-lg w-full p-6 sm:p-8 border shadow-2xl space-y-5">
+      <div class="flex items-center justify-between border-b border-[var(--color-border)] pb-3">
+        <h3 class="font-bold font-serif text-xl flex items-center space-x-2">
+          <i class="fa-solid fa-share-nodes text-[var(--color-primary)]"></i>
+          <span>Share Story</span>
+        </h3>
+        <button onclick="app.closeShareModal()" class="text-[var(--color-muted)] hover:text-white"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+
+      <div class="space-y-4 text-xs">
+        <div>
+          <label class="block font-bold mb-1">Direct Share URL (Includes full story payload)</label>
+          <div class="flex gap-2">
+            <input type="text" id="share-url-input" readonly class="flex-1 p-2.5 rounded-xl border border-[var(--color-border)] bg-black/5 dark:bg-black/30 font-mono text-[11px]">
+            <button onclick="app.copyShareUrl()" class="px-4 py-2 rounded-xl bg-[var(--color-primary)] text-white font-bold whitespace-nowrap">Copy Link</button>
+          </div>
+        </div>
+
+        <div>
+          <label class="block font-bold mb-1">Bookplate Citation Snippet</label>
+          <div class="flex gap-2">
+            <textarea id="share-citation-input" readonly rows="3" class="flex-1 p-2 rounded-xl border border-[var(--color-border)] bg-black/5 dark:bg-black/30 text-[11px]"></textarea>
+            <button onclick="app.copyShareCitation()" class="px-4 py-2 rounded-xl border border-[var(--color-border)] font-bold whitespace-nowrap">Copy Snippet</button>
+          </div>
+        </div>
+
+        <div class="pt-2 border-t border-[var(--color-border)] flex justify-between items-center">
+          <span class="text-[var(--color-muted)] text-[11px]">Download single story file for offline backup:</span>
+          <button onclick="app.downloadSingleStoryJSON()" class="px-3 py-1.5 rounded-xl border border-[var(--color-border)] font-bold text-xs hover:bg-black/5">
+            <i class="fa-solid fa-download mr-1"></i> Download .json
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- HIGHLIGHT TOOLBAR & ANNOTATIONS DRAWER -->
+  <div id="floating-hl-toolbar" class="fixed hidden z-50 bg-slate-900 text-white rounded-full shadow-2xl p-1.5 flex items-center space-x-1.5 border border-slate-700">
+    <button onclick="app.applyHighlight('amber')" class="w-6 h-6 rounded-full bg-amber-300 hover:scale-110 transition" title="Amber"></button>
+    <button onclick="app.applyHighlight('rose')" class="w-6 h-6 rounded-full bg-rose-300 hover:scale-110 transition" title="Rose"></button>
+    <button onclick="app.applyHighlight('mint')" class="w-6 h-6 rounded-full bg-emerald-300 hover:scale-110 transition" title="Mint"></button>
+    <button onclick="app.applyHighlight('sky')" class="w-6 h-6 rounded-full bg-sky-300 hover:scale-110 transition" title="Sky"></button>
+    <button onclick="app.applyHighlight('lavender')" class="w-6 h-6 rounded-full bg-purple-300 hover:scale-110 transition" title="Lavender"></button>
+    <div class="h-4 w-px bg-slate-700 mx-1"></div>
+    <button onclick="app.promptHighlightNote()" class="text-xs px-2.5 py-1 hover:text-sky-300 font-semibold flex items-center space-x-1">
+      <i class="fa-solid fa-comment-medical"></i>
+      <span>Note</span>
+    </button>
+  </div>
+
+  <div id="annotations-drawer-modal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs hidden flex justify-end">
+    <div class="w-full max-w-md margin-surface h-full p-6 shadow-2xl flex flex-col space-y-4 border-l border-[var(--color-border)]">
+      <div class="flex items-center justify-between border-b border-[var(--color-border)] pb-3">
+        <h3 class="font-bold font-serif text-lg">Margin Notes & Highlights</h3>
+        <button onclick="app.toggleAnnotationsDrawer()" class="text-[var(--color-muted)] hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
+      </div>
+      <div id="annotations-list-container" class="flex-1 overflow-y-auto space-y-3 pr-1"></div>
+    </div>
+  </div>
+
+  <!-- SETTINGS MODAL -->
+  <div id="settings-hub-modal" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-xs hidden flex items-center justify-center p-4">
+    <div class="margin-surface rounded-3xl max-w-2xl w-full p-6 sm:p-8 border shadow-2xl space-y-6 max-h-[90vh] overflow-y-auto">
+      
+      <div class="flex items-center justify-between border-b border-[var(--color-border)] pb-4">
+        <div>
+          <h2 class="text-xl font-bold font-serif">Settings & Theme Engine</h2>
+          <p class="text-xs text-[var(--color-muted)]">Customize colors, muted tags, pseudonyms, and data portability.</p>
+        </div>
+        <button onclick="app.closeSettingsModal()" class="text-[var(--color-muted)] hover:text-white"><i class="fa-solid fa-xmark text-xl"></i></button>
+      </div>
+
+      <div class="flex border-b border-[var(--color-border)] text-xs font-semibold space-x-4">
+        <button onclick="app.switchSettingsTab('appearance')" id="stab-btn-appearance" class="pb-2 border-b-2 border-[var(--color-primary)] text-[var(--color-primary)]">Theme & Colors</button>
+        <button onclick="app.switchSettingsTab('filters')" id="stab-btn-filters" class="pb-2 border-b-2 border-transparent text-[var(--color-muted)]">Muted Tags</button>
+        <button onclick="app.switchSettingsTab('pseuds')" id="stab-btn-pseuds" class="pb-2 border-b-2 border-transparent text-[var(--color-muted)]">Pseuds</button>
+        <button onclick="app.switchSettingsTab('portability')" id="stab-btn-portability" class="pb-2 border-b-2 border-transparent text-[var(--color-muted)]">Archive Backup</button>
+      </div>
+
+      <!-- Tab: Appearance -->
+      <div id="stab-content-appearance" class="space-y-4">
+        <div class="text-xs font-bold uppercase tracking-wider text-[var(--color-muted)]">Live Theme Presets</div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+          <button onclick="app.setThemePresetByIndex(0)" class="p-3 rounded-xl border border-[var(--color-border)] flex items-center justify-between hover:bg-black/5">
+            <span>Archival Crimson & Ivory</span>
+            <span class="w-4 h-4 rounded-full bg-[#991b1b]"></span>
+          </button>
+          <button onclick="app.setThemePresetByIndex(1)" class="p-3 rounded-xl border border-[var(--color-border)] flex items-center justify-between hover:bg-black/5">
+            <span>Vellum Sepia Book</span>
+            <span class="w-4 h-4 rounded-full bg-[#8c5a2b]"></span>
+          </button>
+          <button onclick="app.setThemePresetByIndex(2)" class="p-3 rounded-xl border border-[var(--color-border)] flex items-center justify-between hover:bg-black/5">
+            <span>Midnight Obsidian</span>
+            <span class="w-4 h-4 rounded-full bg-[#38bdf8]"></span>
+          </button>
+          <button onclick="app.setThemePresetByIndex(3)" class="p-3 rounded-xl border border-[var(--color-border)] flex items-center justify-between hover:bg-black/5">
+            <span>Bodleian Slate</span>
+            <span class="w-4 h-4 rounded-full bg-[#818cf8]"></span>
+          </button>
+          <button onclick="app.setThemePresetByIndex(4)" class="p-3 rounded-xl border border-[var(--color-border)] flex items-center justify-between hover:bg-black/5">
+            <span>Forest Library</span>
+            <span class="w-4 h-4 rounded-full bg-[#52b788]"></span>
+          </button>
+        </div>
+
+        <div class="text-xs font-bold uppercase tracking-wider text-[var(--color-muted)] pt-2">Custom Color Tokens</div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+          <div class="flex items-center justify-between p-2.5 rounded-xl border border-[var(--color-border)]">
+            <span>Primary Accent</span>
+            <input type="color" id="picker-primary" onchange="app.updateCustomColor('primary', this.value)" class="w-7 h-7 rounded border-0 cursor-pointer">
+          </div>
+          <div class="flex items-center justify-between p-2.5 rounded-xl border border-[var(--color-border)]">
+            <span>Page Background</span>
+            <input type="color" id="picker-bg" onchange="app.updateCustomColor('bg', this.value)" class="w-7 h-7 rounded border-0 cursor-pointer">
+          </div>
+          <div class="flex items-center justify-between p-2.5 rounded-xl border border-[var(--color-border)]">
+            <span>Card Surface</span>
+            <input type="color" id="picker-surface" onchange="app.updateCustomColor('surface', this.value)" class="w-7 h-7 rounded border-0 cursor-pointer">
+          </div>
+          <div class="flex items-center justify-between p-2.5 rounded-xl border border-[var(--color-border)]">
+            <span>Body Text</span>
+            <input type="color" id="picker-text" onchange="app.updateCustomColor('text', this.value)" class="w-7 h-7 rounded border-0 cursor-pointer">
+          </div>
+        </div>
+      </div>
+
+      <!-- Tab: Muted Tags -->
+      <div id="stab-content-filters" class="hidden space-y-3">
+        <div class="text-xs font-bold uppercase tracking-wider text-[var(--color-muted)]">Permanent Muted Tags</div>
+        <div class="flex gap-2">
+          <input type="text" id="add-muted-tag-input" placeholder="Tag to mute..." class="flex-1 p-2 text-xs rounded-xl border border-[var(--color-border)] bg-black/5 dark:bg-black/30 outline-none">
+          <button onclick="app.addPermanentMutedTag()" class="px-4 py-2 rounded-xl bg-rose-900/40 text-rose-500 font-bold text-xs">Mute Tag</button>
+        </div>
+        <div id="settings-muted-tags-list" class="flex flex-wrap gap-1.5 pt-2"></div>
+      </div>
+
+      <!-- Tab: Pseuds -->
+      <div id="stab-content-pseuds" class="hidden space-y-4">
+        <div class="text-xs font-bold uppercase tracking-wider text-[var(--color-muted)]">Manage Pen Names</div>
+        <div class="flex gap-2">
+          <input type="text" id="add-pseud-input" placeholder="New pen name..." class="flex-1 p-2 text-xs rounded-xl border border-[var(--color-border)] bg-black/5 dark:bg-black/30 outline-none">
+          <button onclick="app.addNewPseud()" class="px-4 py-2 rounded-xl bg-[var(--color-primary)] text-white font-bold text-xs">Add Pseud</button>
+        </div>
+        <div id="settings-pseuds-list" class="space-y-1.5 pt-2 text-xs"></div>
+      </div>
+
+      <!-- Tab: Portability -->
+      <div id="stab-content-portability" class="hidden space-y-4">
+        <div class="text-xs font-bold uppercase tracking-wider text-[var(--color-muted)]">GitHub Pages Data Portability</div>
+        <div class="flex flex-wrap gap-3">
+          <button onclick="app.exportArchiveJSON()" class="px-4 py-2.5 rounded-xl bg-slate-800 text-white font-semibold text-xs flex items-center space-x-1.5">
+            <i class="fa-solid fa-download"></i>
+            <span>Export Full Archive (JSON)</span>
+          </button>
+          <label class="px-4 py-2.5 rounded-xl border border-[var(--color-border)] text-xs font-semibold cursor-pointer hover:bg-black/5 flex items-center space-x-1.5">
+            <i class="fa-solid fa-upload"></i>
+            <span>Import JSON Backup</span>
+            <input type="file" accept=".json" onchange="app.importArchiveJSON(event)" class="hidden">
+          </label>
+        </div>
+      </div>
+
+      <div class="flex justify-end pt-2 border-t border-[var(--color-border)]">
+        <button onclick="app.closeSettingsModal()" class="px-5 py-2 rounded-xl bg-[var(--color-primary)] text-white font-bold text-xs">Done</button>
+      </div>
+
+    </div>
+  </div>
+
+  <div id="toast-container" class="fixed bottom-5 right-5 z-50 space-y-2 pointer-events-none"></div>
+
+  <!-- JAVASCRIPT ENGINE -->
+  <script>
+    /**
+     * MARGIN PLATFORM ENGINE
+     * Mandatory Account Gate, Zero Seeded Stories, 1s Smooth Theme Shift, Single Kudos Toggle, URL Hash Sharing
+     */
+
+    const CANONICAL_SYNONYMS = {
+      'slow burn': 'Slow Burn',
+      'slowburn': 'Slow Burn',
+      'enemies to lovers': 'Enemies to Lovers',
+      'found family': 'Found Family',
+      'cozy fantasy': 'Cozy Fantasy',
+      'sci-fi': 'Sci-Fi',
+      'cyberpunk': 'Cyberpunk AU',
+      'mystery': 'Mystery & Detective'
+    };
+
+    const THEME_PRESETS = [
+      { name: 'Archival Crimson', primary: '#991b1b', bg: '#fbf9f5', surface: '#ffffff', text: '#2b2523', tagBg: '#f3eae0', tagText: '#7f1d1d' },
+      { name: 'Vellum Sepia', primary: '#8c5a2b', bg: '#f4ecd8', surface: '#fcf8ed', text: '#3d3127', tagBg: '#ebdcc3', tagText: '#59391a' },
+      { name: 'Midnight Obsidian', primary: '#38bdf8', bg: '#0a0c10', surface: '#12161f', text: '#f1f5f9', tagBg: '#1e293b', tagText: '#7dd3fc' },
+      { name: 'Bodleian Slate', primary: '#818cf8', bg: '#0f172a', surface: '#1e293b', text: '#f8fafc', tagBg: '#312e81', tagText: '#c7d2fe' },
+      { name: 'Forest Library', primary: '#52b788', bg: '#081c15', surface: '#1b4332', text: '#ecfdf5', tagBg: '#2d6a4f', tagText: '#d8f3dc' }
+    ];
+
+    class MarginApp {
+      constructor() {
+        this.works = []; // STRICTLY ZERO SEEDED STORIES! Starts empty!
+        this.accounts = [];
+        this.currentUser = null;
+        this.activeView = 'feed';
+        this.activeReaderWork = null;
+        this.activeReaderChapterIndex = 0;
+        this.unlockedPasswordWorks = new Set();
+        this.userBookmarks = {};
+        this.userHighlights = [];
+        this.userSavedShelf = new Set(); // Saved story IDs
+        this.currentThemeIndex = 0;
+
+        // Editor Multi-Chapter Buffer
+        this.editorChapters = [
+          { title: 'Chapter 1', notesTop: '', notesBottom: '', content: '<p>Start writing chapter text...</p>' }
+        ];
+        this.activeEditorChapIdx = 0;
+        this.editorTags = [];
+
+        this.filters = {
+          includeTags: [],
+          excludeTags: [],
+          includeMode: 'AND',
+          status: 'all',
+          minWords: 0,
+          searchQuery: '',
+          sortBy: 'newest'
+        };
+
+        this.init();
+      }
+
+      init() {
+        this.loadStorage();
+        this.applyThemeColors();
+        this.checkAuthGate();
+        this.setupEditorTagInput();
+        this.setupScrollListener();
+        this.setupSelectionListener();
+        this.handleUrlShareHash();
+        this.renderFeed();
+        this.checkContinueReadingBanner();
+
+        window.addEventListener('hashchange', () => this.handleUrlShareHash());
+      }
+
+      loadStorage() {
+        const storedWorks = localStorage.getItem('margin_works');
+        if (storedWorks) {
+          try { this.works = JSON.parse(storedWorks); } catch (e) { this.works = []; }
+        }
+
+        const storedAccounts = localStorage.getItem('margin_accounts');
+        if (storedAccounts) {
+          try { this.accounts = JSON.parse(storedAccounts); } catch (e) { this.accounts = []; }
+        }
+
+        const storedSession = localStorage.getItem('margin_session');
+        if (storedSession) {
+          try { this.currentUser = JSON.parse(storedSession); } catch (e) { this.currentUser = null; }
+        }
+
+        const storedBookmarks = localStorage.getItem('margin_bookmarks');
+        if (storedBookmarks) {
+          try { this.userBookmarks = JSON.parse(storedBookmarks); } catch (e) {}
+        }
+
+        const storedHighlights = localStorage.getItem('margin_highlights');
+        if (storedHighlights) {
+          try { this.userHighlights = JSON.parse(storedHighlights); } catch (e) {}
+        }
+
+        const storedShelf = localStorage.getItem('margin_shelf');
+        if (storedShelf) {
+          try { this.userSavedShelf = new Set(JSON.parse(storedShelf)); } catch (e) {}
+        }
+
+        const storedThemeIdx = localStorage.getItem('margin_theme_idx');
+        if (storedThemeIdx !== null) {
+          this.currentThemeIndex = parseInt(storedThemeIdx, 10) || 0;
+        }
+      }
+
+      saveWorks() { localStorage.setItem('margin_works', JSON.stringify(this.works)); }
+      saveUserData() {
+        localStorage.setItem('margin_accounts', JSON.stringify(this.accounts));
+        if (this.currentUser) localStorage.setItem('margin_session', JSON.stringify(this.currentUser));
+        else localStorage.removeItem('margin_session');
+        localStorage.setItem('margin_bookmarks', JSON.stringify(this.userBookmarks));
+        localStorage.setItem('margin_highlights', JSON.stringify(this.userHighlights));
+        localStorage.setItem('margin_shelf', JSON.stringify(Array.from(this.userSavedShelf)));
+      }
+      saveTheme() { localStorage.setItem('margin_theme_idx', this.currentThemeIndex.toString()); }
+
+      // SMOOTH 1-SECOND THEME SWITCHING
+      cycleThemeNext() {
+        this.currentThemeIndex = (this.currentThemeIndex + 1) % THEME_PRESETS.length;
+        this.applyThemeColors();
+        this.saveTheme();
+        this.showToast(`Theme shifted to ${THEME_PRESETS[this.currentThemeIndex].name}`);
+      }
+
+      setThemePresetByIndex(idx) {
+        this.currentThemeIndex = idx;
+        this.applyThemeColors();
+        this.saveTheme();
+      }
+
+      applyThemeColors() {
+        const theme = THEME_PRESETS[this.currentThemeIndex];
+        const root = document.documentElement;
+        root.style.setProperty('--color-primary', theme.primary);
+        root.style.setProperty('--color-bg', theme.bg);
+        root.style.setProperty('--color-surface', theme.surface);
+        root.style.setProperty('--color-text', theme.text);
+        root.style.setProperty('--color-tag-bg', theme.tagBg);
+        root.style.setProperty('--color-tag-text', theme.tagText);
+
+        const label = document.getElementById('theme-btn-label');
+        if (label) label.innerText = theme.name;
+
+        // Dark class toggle if obsidian or slate
+        if (theme.name.includes('Obsidian') || theme.name.includes('Slate') || theme.name.includes('Forest')) {
+          document.documentElement.classList.add('dark');
+        } else {
+          document.documentElement.classList.remove('dark');
+        }
+      }
+
+      updateCustomColor(key, hexVal) {
+        THEME_PRESETS[this.currentThemeIndex][key] = hexVal;
+        this.applyThemeColors();
+      }
+
+      // FIRST START MANDATORY AUTH GATE
+      checkAuthGate() {
+        const gate = document.getElementById('welcome-auth-gate');
+        if (!this.currentUser) {
+          gate.classList.remove('hidden');
+          this.populateGateAccountsList();
+        } else {
+          gate.classList.add('hidden');
+          this.renderAuthStatus();
+        }
+      }
+
+      switchAuthGateTab(tab) {
+        const signupForm = document.getElementById('gate-signup-form');
+        const loginForm = document.getElementById('gate-login-form');
+        const tabSignup = document.getElementById('gate-tab-signup');
+        const tabLogin = document.getElementById('gate-tab-login');
+
+        if (tab === 'signup') {
+          signupForm.classList.remove('hidden');
+          loginForm.classList.add('hidden');
+          tabSignup.classList.add('border-[var(--color-primary)]', 'text-[var(--color-primary)]');
+          tabSignup.classList.remove('border-transparent', 'text-[var(--color-muted)]');
+          tabLogin.classList.remove('border-[var(--color-primary)]', 'text-[var(--color-primary)]');
+          tabLogin.classList.add('border-transparent', 'text-[var(--color-muted)]');
+        } else {
+          loginForm.classList.remove('hidden');
+          signupForm.classList.add('hidden');
+          tabLogin.classList.add('border-[var(--color-primary)]', 'text-[var(--color-primary)]');
+          tabLogin.classList.remove('border-transparent', 'text-[var(--color-muted)]');
+          tabSignup.classList.remove('border-[var(--color-primary)]', 'text-[var(--color-primary)]');
+          tabSignup.classList.add('border-transparent', 'text-[var(--color-muted)]');
+        }
+      }
+
+      populateGateAccountsList() {
+        const select = document.getElementById('gate-login-account-select');
+        if (this.accounts.length === 0) {
+          select.innerHTML = '<option value="">No stored profiles found</option>';
+        } else {
+          select.innerHTML = '<option value="">-- Choose Profile --</option>' + 
+            this.accounts.map(acc => `<option value="${acc.username}">${acc.displayName || acc.username} (@${acc.username})</option>`).join('');
+        }
+      }
+
+      fillGateLoginUser(username) {
+        if (!username) return;
+        document.getElementById('gate-login-username').value = username;
+      }
+
+      handleGateSignUp(e) {
+        e.preventDefault();
+        const username = document.getElementById('gate-signup-username').value.trim();
+        const display = document.getElementById('gate-signup-display').value.trim() || username;
+        const password = document.getElementById('gate-signup-password').value;
+
+        if (!username || !password) return alert('Username and password required.');
+        if (this.accounts.some(a => a.username.toLowerCase() === username.toLowerCase())) {
+          return alert('Username already exists.');
+        }
+
+        const newAcc = {
+          id: 'acc-' + Date.now(),
+          username: username,
+          displayName: display,
+          password: password,
+          pseuds: [display, username],
+          mutedTags: []
+        };
+
+        this.accounts.push(newAcc);
+        this.currentUser = newAcc;
+        this.saveUserData();
+        this.checkAuthGate();
+        this.renderFeed();
+        this.showToast(`Welcome to Margin, ${display}!`);
+      }
+
+      handleGateLogIn(e) {
+        e.preventDefault();
+        const username = document.getElementById('gate-login-username').value.trim();
+        const password = document.getElementById('gate-login-password').value;
+        const err = document.getElementById('gate-login-error');
+
+        const acc = this.accounts.find(a => a.username.toLowerCase() === username.toLowerCase() && a.password === password);
+        if (acc) {
+          err.classList.add('hidden');
+          this.currentUser = acc;
+          this.saveUserData();
+          this.checkAuthGate();
+          this.renderFeed();
+          this.showToast(`Signed in as ${acc.displayName || acc.username}`);
+        } else {
+          err.classList.remove('hidden');
+        }
+      }
+
+      logOutUser() {
+        this.currentUser = null;
+        localStorage.removeItem('margin_session');
+        this.checkAuthGate();
+      }
+
+      // NAVIGATION
+      navTo(viewName, param = null) {
+        if (!this.currentUser) {
+          this.checkAuthGate();
+          return;
+        }
+        this.activeView = viewName;
+        document.querySelectorAll('main > section').forEach(sec => sec.classList.add('hidden'));
+
+        const target = document.getElementById(`view-${viewName}`);
+        if (target) target.classList.remove('hidden');
+
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+
+        if (viewName === 'feed') {
+          this.renderFeed();
+          this.checkContinueReadingBanner();
+        } else if (viewName === 'reader' && param) {
+          this.loadWorkIntoReader(param);
+        } else if (viewName === 'editor') {
+          this.resetEditorForm();
+        } else if (viewName === 'profile') {
+          this.renderProfile();
+        }
+      }
+
+      // CANONICAL TAG WRANGLER
+      canonicalizeTag(tag) {
+        const lower = tag.trim().toLowerCase();
+        return CANONICAL_SYNONYMS[lower] || tag.trim();
+      }
+
+      // MAIN FEED RENDERER (ZERO PREBUILT STORIES)
+      renderFeed() {
+        const container = document.getElementById('works-feed-container');
+        const searchVal = (document.getElementById('feed-search-input').value || '').toLowerCase();
+        const sortBy = document.getElementById('feed-sort-select').value;
+        const minWords = parseInt(document.getElementById('filter-min-words')?.value || '0', 10);
+        const statusFilter = document.getElementById('filter-status-select')?.value || 'all';
+
+        // Canonical tags summary bar
+        const tagCounts = {};
+        this.works.forEach(w => w.tags.forEach(t => {
+          const canon = this.canonicalizeTag(t);
+          tagCounts[canon] = (tagCounts[canon] || 0) + 1;
+        }));
+        const sortedCanonTags = Object.keys(tagCounts).sort((a,b) => tagCounts[b] - tagCounts[a]).slice(0, 8);
+
+        document.getElementById('popular-canonical-tags-list').innerHTML = sortedCanonTags.length === 0 ? '<span class="text-[var(--color-muted)] italic text-[11px]">No tags published yet</span>' : sortedCanonTags.map(tag => `
+          <button onclick="app.addIncludeTag('${tag}')" class="margin-tag text-[11px] px-2.5 py-0.5 rounded-full font-medium whitespace-nowrap">
+            #${tag} (${tagCounts[tag]})
+          </button>
+        `).join('');
+
+        // Filtering
+        let filtered = this.works.filter(work => {
+          if (this.currentUser && this.currentUser.mutedTags && this.currentUser.mutedTags.length > 0) {
+            const hasMuted = work.tags.some(t => this.currentUser.mutedTags.includes(this.canonicalizeTag(t)));
+            if (hasMuted) return false;
+          }
+
+          const matchSearch = !searchVal || 
+            work.title.toLowerCase().includes(searchVal) ||
+            work.summary.toLowerCase().includes(searchVal) ||
+            work.fandom.toLowerCase().includes(searchVal) ||
+            work.author.toLowerCase().includes(searchVal) ||
+            work.tags.some(t => t.toLowerCase().includes(searchVal));
+
+          if (!matchSearch) return false;
+          if (work.wordCount < minWords) return false;
+          if (statusFilter === 'complete' && !work.isComplete) return false;
+          if (statusFilter === 'wip' && work.isComplete) return false;
+
+          if (this.filters.includeTags.length > 0) {
+            const workCanonTags = work.tags.map(t => this.canonicalizeTag(t));
+            if (this.filters.includeMode === 'AND') {
+              if (!this.filters.includeTags.every(it => workCanonTags.includes(it))) return false;
+            } else {
+              if (!this.filters.includeTags.some(it => workCanonTags.includes(it))) return false;
+            }
+          }
+
+          if (this.filters.excludeTags.length > 0) {
+            const workCanonTags = work.tags.map(t => this.canonicalizeTag(t));
+            if (this.filters.excludeTags.some(et => workCanonTags.includes(et))) return false;
+          }
+
+          return true;
+        });
+
+        // Sorting
+        if (sortBy === 'newest') filtered.sort((a,b) => new Date(b.date) - new Date(a.date));
+        else if (sortBy === 'kudos') filtered.sort((a,b) => (b.kudos || 0) - (a.kudos || 0));
+        else if (sortBy === 'words') filtered.sort((a,b) => b.wordCount - a.wordCount);
+        else if (sortBy === 'title') filtered.sort((a,b) => a.title.localeCompare(b.title));
+
+        // EDITORIAL EMPTY STATE FOR 0 STORIES
+        if (this.works.length === 0) {
+          container.innerHTML = `
+            <div class="margin-surface p-12 sm:p-16 rounded-3xl text-center border shadow-xl space-y-5">
+              <svg class="w-16 h-16 text-[var(--color-primary)] mx-auto opacity-80" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M6 4C6 2.89543 6.89543 2 8 2H24C25.1046 2 26 2.89543 26 4V28C26 29.1046 25.1046 30 24 30H8C6.89543 30 6 29.1046 6 28V4Z" fill="var(--color-surface)" stroke="currentColor" stroke-width="2"/>
+                <path d="M14 8H22M14 13H20M14 18H22M14 23H18" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+              </svg>
+              <div class="max-w-md mx-auto space-y-2">
+                <h3 class="text-2xl font-bold font-serif text-[var(--color-text)]">The Shelves Are Bare</h3>
+                <p class="text-xs text-[var(--color-muted)] leading-relaxed">Publish the first manuscript to start the archive, or import a shared story link.</p>
+              </div>
+              <div class="flex flex-wrap justify-center gap-3">
+                <button onclick="app.navTo('editor')" class="px-6 py-3 rounded-xl bg-[var(--color-primary)] text-white font-bold text-xs hover:opacity-90 shadow-md flex items-center space-x-2">
+                  <i class="fa-solid fa-plus"></i>
+                  <span>Publish Manuscript</span>
+                </button>
+                <button onclick="app.promptPasteShareCode()" class="px-5 py-3 rounded-xl border border-[var(--color-border)] font-semibold text-xs hover:bg-black/5 flex items-center space-x-2">
+                  <i class="fa-solid fa-link text-emerald-600"></i>
+                  <span>Import Shared Story</span>
+                </button>
+              </div>
+            </div>
+          `;
+          return;
+        }
+
+        if (filtered.length === 0) {
+          container.innerHTML = `
+            <div class="margin-surface p-10 rounded-3xl text-center border space-y-3">
+              <i class="fa-solid fa-wind text-3xl text-[var(--color-muted)]"></i>
+              <p class="text-sm text-[var(--color-muted)]">No manuscripts match your filter settings.</p>
+              <button onclick="app.resetAllFilters()" class="text-xs text-[var(--color-primary)] font-bold hover:underline">Clear Filters</button>
+            </div>
+          `;
+          return;
+        }
+
+        // Render Cards with AO3 Metadata & Bookplate Spine
+        container.innerHTML = filtered.map(work => {
+          const isLocked = Boolean(work.password) && !this.unlockedPasswordWorks.has(work.id);
+          const authorDisplay = work.isAnonymous ? '<i>Anonymous Writer</i>' : (work.pseud || work.author);
+          const estReadTime = Math.max(1, Math.round(work.wordCount / 200));
+          const isOwner = this.currentUser && (work.author === this.currentUser.username);
+          const hasKudosed = work.kudosUsers && this.currentUser && work.kudosUsers.includes(this.currentUser.username);
+          const isBookmarked = this.userSavedShelf.has(work.id);
+
+          const canonTags = work.tags.map(t => this.canonicalizeTag(t));
+          const firstFive = canonTags.slice(0, 5);
+          const remainingCount = canonTags.length - 5;
+          const chapterCountStr = work.chapters ? `${work.chapters.length}/${work.isComplete ? work.chapters.length : '?'}` : '1/1';
+
+          return `
+            <article class="margin-surface rounded-3xl p-6 border shadow-lg space-y-4 hover:shadow-xl transition relative bookplate-spine" style="--spine-color: ${work.spineColor || 'var(--color-primary)'}">
+              
+              <!-- AO3 Header Metadata Badge Bar -->
+              <div class="flex flex-wrap items-center justify-between text-xs gap-2 border-b border-[var(--color-border)] pb-3">
+                <div class="flex items-center space-x-2">
+                  <span class="px-2.5 py-0.5 rounded-md bg-black/10 dark:bg-white/10 font-bold">${work.rating}</span>
+                  <span class="px-2 py-0.5 rounded-md bg-indigo-950 text-indigo-300 font-medium">${work.category}</span>
+                  <span class="px-2 py-0.5 rounded-md bg-rose-950 text-rose-300 font-medium">${work.warning || 'No Archive Warnings'}</span>
+                  <span class="font-medium text-[var(--color-muted)]">• ${work.fandom}</span>
+                </div>
+                <div class="flex items-center space-x-3 text-[var(--color-muted)] font-mono text-[11px]">
+                  <span>Chapter ${chapterCountStr}</span>
+                  <span>${work.wordCount.toLocaleString()} words</span>
+                  <span>~${estReadTime} min</span>
+                </div>
+              </div>
+
+              <!-- Title & Author -->
+              <div class="space-y-1">
+                <div class="flex items-center justify-between">
+                  <div class="flex items-center space-x-3">
+                    <h3 onclick="app.navTo('reader', '${work.id}')" class="text-xl sm:text-2xl font-bold font-serif cursor-pointer hover:text-[var(--color-primary)] transition ${isLocked ? 'locked-blur' : ''}">
+                      ${isLocked ? '••••••••••••••••••••' : work.title}
+                    </h3>
+                    ${isLocked ? `<span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-amber-950 text-amber-300 border border-amber-800"><i class="fa-solid fa-lock mr-1"></i>Locked</span>` : ''}
+                  </div>
+                  <div class="flex items-center space-x-2">
+                    <button onclick="app.shareWork('${work.id}')" class="text-xs text-[var(--color-muted)] hover:text-emerald-600 px-2 py-1 rounded" title="Share Story">
+                      <i class="fa-solid fa-share-nodes"></i>
+                    </button>
+                    ${isOwner ? `
+                      <button onclick="app.deleteUserWork('${work.id}')" class="text-xs text-rose-500 hover:text-rose-700 px-2 py-1 rounded" title="Delete Manuscript">
+                        <i class="fa-solid fa-trash"></i>
+                      </button>
+                    ` : ''}
+                  </div>
+                </div>
+                <div class="text-xs text-[var(--color-muted)] ${isLocked ? 'locked-blur' : ''}">
+                  by <span class="font-bold text-[var(--color-text)]">${isLocked ? '🔒 Hidden Author' : authorDisplay}</span>
+                </div>
+              </div>
+
+              <!-- Summary -->
+              <div class="text-sm text-[var(--color-text)] leading-relaxed ${isLocked ? 'locked-blur' : ''}">
+                ${isLocked ? 'This manuscript is password protected by the author.' : work.summary}
+              </div>
+
+              <!-- Excerpt Preview Drawer Button -->
+              ${!isLocked && work.chapters && work.chapters[0] ? `
+                <div class="pt-1">
+                  <button onclick="app.toggleCardExcerpt('${work.id}')" class="text-xs font-semibold text-[var(--color-primary)] hover:underline flex items-center space-x-1">
+                    <i class="fa-solid fa-align-left text-[10px]"></i>
+                    <span id="excerpt-btn-text-${work.id}">Read Preview Excerpt</span>
+                  </button>
+                  <div id="card-excerpt-${work.id}" class="hidden mt-2 p-3.5 rounded-2xl bg-black/5 dark:bg-black/30 border border-[var(--color-border)] text-xs italic reader-body max-h-36 overflow-y-auto">
+                    ${work.chapters[0].content.replace(/<[^>]*>?/gm, '').substring(0, 350)}...
+                  </div>
+                </div>
+              ` : ''}
+
+              <!-- Tag Chips (Crisp) -->
+              <div class="space-y-1.5 pt-1">
+                <div class="flex flex-wrap items-center gap-1.5" id="tag-group-${work.id}">
+                  ${firstFive.map(t => `
+                    <button onclick="app.addIncludeTag('${t}')" class="margin-tag text-xs px-2.5 py-1 rounded-full font-medium">
+                      #${t}
+                    </button>
+                  `).join('')}
+                  ${remainingCount > 0 ? `
+                    <button onclick="app.expandCardTags('${work.id}')" class="text-xs px-2 py-0.5 rounded-full border border-[var(--color-border)] text-[var(--color-muted)]">
+                      +${remainingCount} more
+                    </button>
+                  ` : ''}
+                </div>
+              </div>
+
+              <!-- Action Bar -->
+              <div class="flex items-center justify-between pt-3 border-t border-[var(--color-border)] text-xs">
+                <div class="flex items-center space-x-3">
+                  <!-- Single Kudos Toggle Button on Card -->
+                  <button onclick="app.toggleKudos('${work.id}')" class="font-bold flex items-center space-x-1 hover:scale-105 transition ${hasKudosed ? 'text-rose-600' : 'text-[var(--color-muted)]'}">
+                    <i class="${hasKudosed ? 'fa-solid fa-heart text-rose-600' : 'fa-regular fa-heart'}"></i>
+                    <span>${work.kudos || 0} Kudos</span>
+                  </button>
+
+                  <!-- Shelf Bookmark Button -->
+                  <button onclick="app.toggleShelfBookmark('${work.id}')" class="font-bold flex items-center space-x-1 hover:scale-105 transition ${isBookmarked ? 'text-sky-600' : 'text-[var(--color-muted)]'}">
+                    <i class="${isBookmarked ? 'fa-solid fa-bookmark' : 'fa-regular fa-bookmark'}"></i>
+                    <span>${isBookmarked ? 'Saved' : 'Bookmark'}</span>
+                  </button>
+                </div>
+
+                <button onclick="app.navTo('reader', '${work.id}')" class="px-4 py-1.5 rounded-xl bg-[var(--color-primary)] text-white font-bold hover:opacity-90 flex items-center space-x-1.5">
+                  <span>Read Manuscript</span>
+                  <i class="fa-solid fa-arrow-right text-xs"></i>
+                </button>
+              </div>
+
+            </article>
+          `;
+        }).join('');
+      }
+
+      toggleCardExcerpt(workId) {
+        const drawer = document.getElementById(`card-excerpt-${workId}`);
+        const btnText = document.getElementById(`excerpt-btn-text-${workId}`);
+        if (drawer.classList.contains('hidden')) {
+          drawer.classList.remove('hidden');
+          btnText.innerText = 'Hide Preview Excerpt';
+        } else {
+          drawer.classList.add('hidden');
+          btnText.innerText = 'Read Preview Excerpt';
+        }
+      }
+
+      deleteUserWork(workId) {
+        if (!confirm('Are you sure you want to delete this manuscript from the archive?')) return;
+        this.works = this.works.filter(w => w.id !== workId);
+        this.saveWorks();
+        this.renderFeed();
+        this.showToast('Manuscript deleted.');
+      }
+
+      expandCardTags(workId) {
+        const work = this.works.find(w => w.id === workId);
+        if (!work) return;
+        const container = document.getElementById(`tag-group-${workId}`);
+        const canonTags = work.tags.map(t => this.canonicalizeTag(t));
+        container.innerHTML = canonTags.map(t => `
+          <button onclick="app.addIncludeTag('${t}')" class="margin-tag text-xs px-2.5 py-1 rounded-full font-medium">
+            #${t}
+          </button>
+        `).join('');
+      }
+
+      // SINGLE KUDOS TOGGLE BUTTON ENGINE
+      toggleKudos(targetWorkId = null) {
+        if (!this.currentUser) return alert('Please sign in to give kudos.');
+        const work = targetWorkId ? this.works.find(w => w.id === targetWorkId) : this.activeReaderWork;
+        if (!work) return;
+
+        if (!work.kudosUsers) work.kudosUsers = [];
+
+        const userIdx = work.kudosUsers.indexOf(this.currentUser.username);
+        if (userIdx !== -1) {
+          // Take away kudos
+          work.kudosUsers.splice(userIdx, 1);
+          work.kudos = Math.max(0, (work.kudos || 1) - 1);
+          this.showToast('Kudos removed.');
+        } else {
+          // Give single kudos
+          work.kudosUsers.push(this.currentUser.username);
+          work.kudos = (work.kudos || 0) + 1;
+          this.showToast('❤️ You left kudos on this story!');
+        }
+
+        this.saveWorks();
+
+        if (this.activeView === 'feed') this.renderFeed();
+        if (this.activeView === 'reader' && this.activeReaderWork && this.activeReaderWork.id === work.id) {
+          const hasKudosed = work.kudosUsers.includes(this.currentUser.username);
+          const kudosBtn = document.getElementById('kudos-btn');
+          const kudosIcon = document.getElementById('kudos-icon');
+          const kudosText = document.getElementById('reader-kudos-text');
+          
+          if (hasKudosed) {
+            kudosBtn.classList.add('bg-rose-900/30');
+            kudosIcon.className = 'fa-solid fa-heart text-rose-500';
+          } else {
+            kudosBtn.classList.remove('bg-rose-900/30');
+            kudosIcon.className = 'fa-regular fa-heart';
+          }
+          kudosText.innerText = `Kudos (${work.kudos})`;
+        }
+      }
+
+      // BOOKMARK SHELF TOGGLE
+      toggleShelfBookmark(workId) {
+        if (this.userSavedShelf.has(workId)) {
+          this.userSavedShelf.delete(workId);
+          this.showToast('Removed from your shelf');
+        } else {
+          this.userSavedShelf.add(workId);
+          this.showToast('📌 Added to your library shelf');
+        }
+        this.saveUserData();
+        if (this.activeView === 'feed') this.renderFeed();
+      }
+
+      // STORY SHARING SYSTEM (URL Hash Payload + Citation + JSON Export)
+      shareWork(workId) {
+        const work = this.works.find(w => w.id === workId);
+        if (!work) return;
+        this.openShareModalForWork(work);
+      }
+
+      shareWorkFromReader() {
+        if (this.activeReaderWork) this.openShareModalForWork(this.activeReaderWork);
+      }
+
+      openShareModalForWork(work) {
+        const modal = document.getElementById('share-modal');
+        const jsonStr = JSON.stringify(work);
+        const encodedPayload = btoa(unescape(encodeURIComponent(jsonStr)));
+        const shareUrl = `${window.location.origin}${window.location.pathname}#story=${encodedPayload}`;
+
+        document.getElementById('share-url-input').value = shareUrl;
+
+        const citation = `"${work.title}" by ${work.author}\nFandom: ${work.fandom} | Rating: ${work.rating} | Words: ${work.wordCount}\nSummary: ${work.summary}\nLink: ${shareUrl}`;
+        document.getElementById('share-citation-input').value = citation;
+
+        this.currentShareWorkObj = work;
+        modal.classList.remove('hidden');
+      }
+
+      closeShareModal() { document.getElementById('share-modal').classList.add('hidden'); }
+
+      copyShareUrl() {
+        const input = document.getElementById('share-url-input');
+        input.select();
+        document.execCommand('copy');
+        this.showToast('📋 Share link copied to clipboard!');
+      }
+
+      copyShareCitation() {
+        const input = document.getElementById('share-citation-input');
+        input.select();
+        document.execCommand('copy');
+        this.showToast('📋 Citation snippet copied to clipboard!');
+      }
+
+      downloadSingleStoryJSON() {
+        if (!this.currentShareWorkObj) return;
+        const blob = new Blob([JSON.stringify(this.currentShareWorkObj, null, 2)], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `story_${this.currentShareWorkObj.title.replace(/\s+/g, '_')}.json`;
+        a.click();
+        URL.revokeObjectURL(url);
+      }
+
+      promptPasteShareCode() {
+        const code = prompt('Paste URL Share link or Base64 story payload:');
+        if (!code) return;
+        try {
+          let payloadStr = code;
+          if (code.includes('#story=')) {
+            payloadStr = code.split('#story=')[1];
+          }
+          const decodedJson = decodeURIComponent(escape(atob(payloadStr.trim())));
+          const work = JSON.parse(decodedJson);
+          if (work && work.title) {
+            if (!this.works.some(w => w.id === work.id)) {
+              this.works.unshift(work);
+              this.saveWorks();
+            }
+            this.navTo('reader', work.id);
+            this.showToast(`📖 Story "${work.title}" imported!`);
+          }
+        } catch(e) {
+          alert('Invalid share link or payload code.');
+        }
+      }
+
+      handleUrlShareHash() {
+        const hash = window.location.hash;
+        if (hash && hash.startsWith('#story=')) {
+          const payloadStr = hash.replace('#story=', '');
+          try {
+            const decodedJson = decodeURIComponent(escape(atob(payloadStr)));
+            const work = JSON.parse(decodedJson);
+            if (work && work.title) {
+              if (!this.works.some(w => w.id === work.id)) {
+                this.works.unshift(work);
+                this.saveWorks();
+              }
+              this.navTo('reader', work.id);
+              this.showToast(`📖 Imported story from link: "${work.title}"`);
+            }
+          } catch(e) {}
+        }
+      }
+
+      // DISTRACTION-FREE READER
+      loadWorkIntoReader(workId, chapterIdx = 0) {
+        const work = this.works.find(w => w.id === workId);
+        if (!work) return this.navTo('feed');
+
+        this.activeReaderWork = work;
+        this.activeReaderChapterIndex = parseInt(chapterIdx, 10);
+        const isLocked = Boolean(work.password) && !this.unlockedPasswordWorks.has(work.id);
+
+        const authorDisplay = work.isAnonymous ? '<i>Anonymous Writer</i>' : (work.pseud || work.author);
+        const estReadingTime = Math.max(1, Math.round(work.wordCount / 200));
+
+        document.getElementById('reader-meta-header').innerHTML = `
+          <div class="flex items-center justify-center space-x-2 text-xs font-mono text-[var(--color-muted)]">
+            <span class="px-2 py-0.5 rounded bg-black/10 dark:bg-white/10 font-bold">${work.rating}</span>
+            <span>•</span>
+            <span>${work.warning || 'No Warnings'}</span>
+            <span>•</span>
+            <span>${work.fandom}</span>
+          </div>
+          <h1 class="${isLocked ? 'locked-blur' : ''} text-3xl sm:text-5xl font-bold font-serif tracking-tight text-[var(--color-text)]">
+            ${isLocked ? '••••••••••••••••••••' : work.title}
+          </h1>
+          <div class="${isLocked ? 'locked-blur' : ''} text-sm text-[var(--color-muted)]">
+            Written by <span class="font-bold text-[var(--color-primary)]">${isLocked ? '🔒 Hidden Author' : authorDisplay}</span>
+          </div>
+        `;
+
+        document.getElementById('reader-tags-box').innerHTML = work.tags.map(t => `
+          <button onclick="app.navTo('feed'); app.addIncludeTag('${this.canonicalizeTag(t)}');" class="margin-tag text-xs px-2.5 py-1 rounded-full font-medium">
+            #${this.canonicalizeTag(t)}
+          </button>
+        `).join('');
+
+        const chapSelectContainer = document.getElementById('reader-chapter-select-container');
+        const chapSelect = document.getElementById('reader-chapter-select');
+
+        if (work.chapters && work.chapters.length > 1) {
+          chapSelectContainer.classList.remove('hidden');
+          chapSelect.innerHTML = work.chapters.map((ch, idx) => `
+            <option value="${idx}" ${idx === this.activeReaderChapterIndex ? 'selected' : ''}>
+              ${idx + 1}. ${ch.title || 'Chapter ' + (idx+1)}
+            </option>
+          `).join('');
+        } else {
+          chapSelectContainer.classList.add('hidden');
+        }
+
+        const lockOverlay = document.getElementById('reader-lock-overlay');
+        const textContainer = document.getElementById('reader-text-container');
+
+        if (isLocked) {
+          lockOverlay.classList.remove('hidden');
+          document.getElementById('reader-lock-hint').innerText = work.passwordHint ? `Author Hint: ${work.passwordHint}` : 'Passphrase required.';
+          textContainer.classList.add('locked-blur');
+          textContainer.innerHTML = `<p>${work.summary}</p><hr class="my-6 border-[var(--color-border)]"><p>Manuscript text is locked.</p>`;
+          document.getElementById('reader-author-notes-top').classList.add('hidden');
+          document.getElementById('reader-author-notes-bottom').classList.add('hidden');
+        } else {
+          lockOverlay.classList.add('hidden');
+          textContainer.classList.remove('locked-blur');
+
+          const activeChap = (work.chapters && work.chapters[this.activeReaderChapterIndex]) ? work.chapters[this.activeReaderChapterIndex] : (work.chapters ? work.chapters[0] : { content: '' });
+          textContainer.innerHTML = activeChap.content;
+
+          const topNotes = document.getElementById('reader-author-notes-top');
+          if (activeChap.notesTop) {
+            topNotes.classList.remove('hidden');
+            document.getElementById('reader-author-notes-top-text').innerText = activeChap.notesTop;
+          } else { topNotes.classList.add('hidden'); }
+
+          const botNotes = document.getElementById('reader-author-notes-bottom');
+          if (activeChap.notesBottom) {
+            botNotes.classList.remove('hidden');
+            document.getElementById('reader-author-notes-bottom-text').innerText = activeChap.notesBottom;
+          } else { botNotes.classList.add('hidden'); }
+
+          this.applyStoredHighlightsToReader();
+        }
+
+        // Kudos Toggle Icon status
+        const hasKudosed = work.kudosUsers && this.currentUser && work.kudosUsers.includes(this.currentUser.username);
+        const kudosBtn = document.getElementById('kudos-btn');
+        const kudosIcon = document.getElementById('kudos-icon');
+        if (hasKudosed) {
+          kudosBtn.classList.add('bg-rose-900/30');
+          kudosIcon.className = 'fa-solid fa-heart text-rose-500';
+        } else {
+          kudosBtn.classList.remove('bg-rose-900/30');
+          kudosIcon.className = 'fa-regular fa-heart';
+        }
+        document.getElementById('reader-kudos-text').innerText = `Kudos (${work.kudos || 0})`;
+        document.getElementById('reader-highlights-count').innerText = `Notes (${this.getWorkHighlights(work.id).length})`;
+
+        // Chapter Bottom Buttons
+        const prevNextContainer = document.getElementById('reader-prev-next-btns');
+        if (!isLocked && work.chapters && work.chapters.length > 1) {
+          const hasPrev = this.activeReaderChapterIndex > 0;
+          const hasNext = this.activeReaderChapterIndex < work.chapters.length - 1;
+          prevNextContainer.innerHTML = `
+            ${hasPrev ? `<button onclick="app.switchReaderChapter(${this.activeReaderChapterIndex - 1})" class="px-3 py-1.5 rounded-xl border text-xs font-semibold hover:bg-black/5"><i class="fa-solid fa-chevron-left mr-1"></i> Prev</button>` : ''}
+            ${hasNext ? `<button onclick="app.switchReaderChapter(${this.activeReaderChapterIndex + 1})" class="px-3 py-1.5 rounded-xl border text-xs font-semibold bg-[var(--color-primary)] text-white">Next Chapter <i class="fa-solid fa-chevron-right ml-1"></i></button>` : ''}
+          `;
+        } else {
+          prevNextContainer.innerHTML = '';
+        }
+      }
+
+      switchReaderChapter(chapIdx) {
+        if (!this.activeReaderWork) return;
+        this.loadWorkIntoReader(this.activeReaderWork.id, chapIdx);
+      }
+
+      unlockReaderWork() {
+        const input = document.getElementById('reader-password-input');
+        const err = document.getElementById('reader-password-error');
+        if (!this.activeReaderWork) return;
+
+        if (input.value.trim() === this.activeReaderWork.password) {
+          this.unlockedPasswordWorks.add(this.activeReaderWork.id);
+          input.value = '';
+          err.classList.add('hidden');
+          this.showToast('Manuscript unlocked!');
+          this.loadWorkIntoReader(this.activeReaderWork.id, this.activeReaderChapterIndex);
+        } else {
+          err.classList.remove('hidden');
+        }
+      }
+
+      // PUBLISHING STUDIO (Multi-chapter & Bookplate accents)
+      resetEditorForm() {
+        document.getElementById('edit-title').value = '';
+        document.getElementById('edit-fandom').value = '';
+        document.getElementById('edit-rating').value = 'General Audiences';
+        document.getElementById('edit-category').value = 'Gen';
+        document.getElementById('edit-warning').value = 'No Archive Warnings Apply';
+        document.getElementById('edit-is-complete').value = 'true';
+        document.getElementById('edit-password').value = '';
+        document.getElementById('edit-password-hint').value = '';
+        document.getElementById('edit-summary').value = '';
+        document.getElementById('edit-anonymous').checked = false;
+
+        this.editorChapters = [
+          { title: 'Chapter 1', notesTop: '', notesBottom: '', content: '<p>Start writing chapter text...</p>' }
+        ];
+        this.activeEditorChapIdx = 0;
+        this.editorTags = ['Original Work'];
+
+        const pseudSelect = document.getElementById('edit-pseud-select');
+        const userPseuds = (this.currentUser && this.currentUser.pseuds) ? this.currentUser.pseuds : [this.currentUser?.username || 'Author'];
+        pseudSelect.innerHTML = userPseuds.map(p => `<option value="${p}">${p}</option>`).join('');
+
+        this.renderEditorChapterTabs();
+        this.loadActiveEditorChapterData();
+        this.renderEditorTagChips();
+      }
+
+      renderEditorChapterTabs() {
+        const container = document.getElementById('editor-chapters-tabs-list');
+        container.innerHTML = this.editorChapters.map((ch, idx) => `
+          <div class="flex items-center space-x-1 px-3 py-1.5 rounded-xl border ${idx === this.activeEditorChapIdx ? 'bg-[var(--color-primary)] text-white font-bold' : 'border-[var(--color-border)] hover:bg-black/5'}">
+            <button onclick="app.switchEditorChapter(${idx})">${ch.title || 'Chapter ' + (idx+1)}</button>
+            ${this.editorChapters.length > 1 ? `<button onclick="app.removeEditorChapter(${idx})" class="ml-1 text-[10px] opacity-70 hover:opacity-100"><i class="fa-solid fa-xmark"></i></button>` : ''}
+          </div>
+        `).join('');
+      }
+
+      addNewEditorChapter() {
+        this.saveCurrentEditorChapterBuffer();
+        const newIdx = this.editorChapters.length;
+        this.editorChapters.push({
+          title: `Chapter ${newIdx + 1}`,
+          notesTop: '',
+          notesBottom: '',
+          content: '<p>Write chapter text here...</p>'
+        });
+        this.activeEditorChapIdx = newIdx;
+        this.renderEditorChapterTabs();
+        this.loadActiveEditorChapterData();
+      }
+
+      switchEditorChapter(idx) {
+        this.saveCurrentEditorChapterBuffer();
+        this.activeEditorChapIdx = idx;
+        this.renderEditorChapterTabs();
+        this.loadActiveEditorChapterData();
+      }
+
+      removeEditorChapter(idx) {
+        if (this.editorChapters.length <= 1) return;
+        this.editorChapters.splice(idx, 1);
+        this.activeEditorChapIdx = Math.max(0, this.activeEditorChapIdx - 1);
+        this.renderEditorChapterTabs();
+        this.loadActiveEditorChapterData();
+      }
+
+      saveCurrentEditorChapterBuffer() {
+        if (!this.editorChapters[this.activeEditorChapIdx]) return;
+        this.editorChapters[this.activeEditorChapIdx].title = document.getElementById('edit-chapter-title').value.trim() || `Chapter ${this.activeEditorChapIdx + 1}`;
+        this.editorChapters[this.activeEditorChapIdx].notesTop = document.getElementById('edit-notes-top').value.trim();
+        this.editorChapters[this.activeEditorChapIdx].notesBottom = document.getElementById('edit-notes-bottom').value.trim();
+        this.editorChapters[this.activeEditorChapIdx].content = document.getElementById('editor-body-content').innerHTML;
+      }
+
+      loadActiveEditorChapterData() {
+        const chap = this.editorChapters[this.activeEditorChapIdx];
+        if (!chap) return;
+        document.getElementById('edit-chapter-title').value = chap.title || '';
+        document.getElementById('edit-notes-top').value = chap.notesTop || '';
+        document.getElementById('edit-notes-bottom').value = chap.notesBottom || '';
+        document.getElementById('editor-body-content').innerHTML = chap.content || '';
+        this.onEditorInput();
+      }
+
+      setupEditorTagInput() {
+        const input = document.getElementById('editor-tag-input');
+        input.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter' || e.key === ',') {
+            e.preventDefault();
+            const tagVal = input.value.trim().replace(/^,|,$/g, '');
+            if (tagVal && !this.editorTags.includes(tagVal)) {
+              this.editorTags.push(tagVal);
+              this.renderEditorTagChips();
+              input.value = '';
+            }
+          }
+        });
+      }
+
+      renderEditorTagChips() {
+        document.getElementById('editor-tag-chips').innerHTML = this.editorTags.map((tag, idx) => `
+          <span class="margin-tag text-xs px-2.5 py-1 rounded-full font-medium flex items-center space-x-1">
+            <span>#${tag}</span>
+            <button onclick="app.removeEditorTag(${idx})" class="hover:text-rose-600 ml-1"><i class="fa-solid fa-xmark"></i></button>
+          </span>
+        `).join('');
+      }
+
+      removeEditorTag(idx) {
+        this.editorTags.splice(idx, 1);
+        this.renderEditorTagChips();
+      }
+
+      formatEditorDoc(cmd, val = null) { document.execCommand(cmd, false, val); }
+      insertSceneDivider() { document.execCommand('insertHTML', false, '<p class="text-center font-bold my-6">✦ ✦ ✦</p>'); }
+      toggleSymbolPalette() { document.getElementById('symbols-palette-drawer').classList.toggle('hidden'); }
+      insertGlyph(symbol) { document.execCommand('insertText', false, symbol); }
+
+      onEditorInput() {
+        this.saveCurrentEditorChapterBuffer();
+        let totalWords = 0;
+        this.editorChapters.forEach(c => {
+          const text = c.content.replace(/<[^>]*>?/gm, '').trim();
+          if (text) totalWords += text.split(/\s+/).length;
+        });
+        document.getElementById('editor-word-count-badge').innerText = `${totalWords} words`;
+      }
+
+      savePublishedWork() {
+        if (!this.currentUser) return alert('Please sign in to publish.');
+        this.saveCurrentEditorChapterBuffer();
+
+        const title = document.getElementById('edit-title').value.trim();
+        const fandom = document.getElementById('edit-fandom').value.trim() || 'Original Fiction';
+        const pseud = document.getElementById('edit-pseud-select').value;
+        const rating = document.getElementById('edit-rating').value;
+        const category = document.getElementById('edit-category').value;
+        const warning = document.getElementById('edit-warning').value;
+        const isComplete = document.getElementById('edit-is-complete').value === 'true';
+        const password = document.getElementById('edit-password').value.trim();
+        const hint = document.getElementById('edit-password-hint').value.trim();
+        const summary = document.getElementById('edit-summary').value.trim();
+        const spineColor = document.getElementById('edit-spine-color').value;
+        const isAnon = document.getElementById('edit-anonymous').checked;
+
+        if (!title) return alert('Please enter a story title.');
+
+        let totalWords = 0;
+        this.editorChapters.forEach(c => {
+          const text = c.content.replace(/<[^>]*>?/gm, '').trim();
+          if (text) totalWords += text.split(/\s+/).length;
+        });
+
+        const newWork = {
+          id: 'work-' + Date.now(),
+          title: title,
+          author: this.currentUser.username,
+          pseud: isAnon ? 'Anonymous Writer' : (pseud || this.currentUser.displayName || this.currentUser.username),
+          isAnonymous: isAnon,
+          fandom: fandom,
+          rating: rating,
+          category: category,
+          warning: warning,
+          isComplete: isComplete,
+          tags: this.editorTags.length > 0 ? this.editorTags : ['General'],
+          summary: summary || 'No summary provided.',
+          spineColor: spineColor,
+          chapters: this.editorChapters,
+          date: new Date().toISOString().split('T')[0],
+          wordCount: totalWords,
+          kudos: 0,
+          kudosUsers: [],
+          password: password,
+          passwordHint: hint
+        };
+
+        this.works.unshift(newWork);
+        this.saveWorks();
+        this.showToast('🎉 Manuscript published to Archive!');
+        this.navTo('reader', newWork.id);
+      }
+
+      // PROFILE VIEW RENDERER
+      renderProfile() {
+        const container = document.getElementById('profile-container');
+        if (!this.currentUser) return;
+
+        const myWorks = this.works.filter(w => w.author === this.currentUser.username);
+        const savedWorks = this.works.filter(w => this.userSavedShelf.has(w.id));
+
+        container.innerHTML = `
+          <div class="flex flex-wrap items-center justify-between border-b border-[var(--color-border)] pb-4 gap-4">
+            <div class="flex items-center space-x-4">
+              <div class="w-14 h-14 rounded-2xl bg-[var(--color-primary)] text-white flex items-center justify-center font-bold text-2xl uppercase font-serif shadow-md">
+                ${this.currentUser.username.charAt(0)}
+              </div>
+              <div>
+                <h2 class="text-2xl font-bold font-serif">${this.currentUser.displayName || this.currentUser.username}</h2>
+                <div class="text-xs text-[var(--color-muted)]">@${this.currentUser.username} • ${myWorks.length} Published Manuscripts</div>
+              </div>
+            </div>
+            <button onclick="app.logOutUser()" class="px-4 py-2 rounded-xl border border-rose-900/40 text-rose-600 font-bold text-xs hover:bg-rose-950/20">Log Out</button>
+          </div>
+
+          <!-- Published Stories -->
+          <div class="space-y-4">
+            <h3 class="text-lg font-bold font-serif flex items-center space-x-2">
+              <i class="fa-solid fa-feather-pointed text-[var(--color-primary)]"></i>
+              <span>Your Published Manuscripts (${myWorks.length})</span>
+            </h3>
+
+            ${myWorks.length === 0 ? '<p class="text-xs text-[var(--color-muted)]">No published manuscripts yet.</p>' : `
+              <div class="space-y-3">
+                ${myWorks.map(w => `
+                  <div class="margin-surface p-4 rounded-2xl border flex items-center justify-between text-xs">
+                    <div>
+                      <div class="font-bold text-sm">${w.title} ${w.isAnonymous ? '<span class="text-[10px] text-[var(--color-muted)] font-normal">(Anonymous)</span>' : ''}</div>
+                      <div class="text-[var(--color-muted)]">${w.wordCount} words • ${w.kudos || 0} kudos • Published ${w.date}</div>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                      <button onclick="app.navTo('reader', '${w.id}')" class="px-3 py-1.5 rounded-xl bg-[var(--color-primary)] text-white font-bold">Read</button>
+                      <button onclick="app.deleteUserWork('${w.id}')" class="px-3 py-1.5 rounded-xl border border-rose-900/40 text-rose-600 font-bold hover:bg-rose-950/20">Delete</button>
+                    </div>
+                  </div>
+                `).join('')}
+              </div>
+            `}
+          </div>
+
+          <!-- Saved Shelf -->
+          <div class="space-y-4 pt-4 border-t border-[var(--color-border)]">
+            <h3 class="text-lg font-bold font-serif flex items-center space-x-2">
+              <i class="fa-solid fa-bookmark text-[var(--color-primary)]"></i>
+              <span>Saved Library Shelf (${savedWorks.length})</span>
+            </h3>
+
+            ${savedWorks.length === 0 ? '<p class="text-xs text-[var(--color-muted)]">No manuscripts bookmarked to your shelf.</p>' : `
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                ${savedWorks.map(w => `
+                  <div class="margin-surface p-4 rounded-2xl border space-y-2 text-xs">
+                    <div class="font-bold text-sm truncate">${w.title}</div>
+                    <div class="text-[var(--color-muted)]">by ${w.author}</div>
+                    <button onclick="app.navTo('reader', '${w.id}')" class="w-full py-1.5 rounded-xl border border-[var(--color-border)] font-bold text-center block mt-2 hover:bg-black/5">
+                      Open Manuscript
+                    </button>
+                  </div>
+                `).join('')}
+              </div>
+            `}
+          </div>
+        `;
+      }
+
+      renderAuthStatus() {
+        if (!this.currentUser) return;
+        document.getElementById('auth-status-container').innerHTML = `
+          <div class="flex items-center space-x-1.5">
+            <button onclick="app.navTo('profile')" class="flex items-center space-x-2 px-3 py-1.5 rounded-xl border border-[var(--color-border)] hover:bg-black/5 transition text-xs font-semibold">
+              <i class="fa-solid fa-user-circle text-[var(--color-primary)]"></i>
+              <span>${this.currentUser.displayName || this.currentUser.username}</span>
+            </button>
+            <button onclick="app.logOutUser()" class="p-2 rounded-xl border border-[var(--color-border)] hover:bg-rose-950/20 hover:text-rose-500 transition text-xs" title="Log Out">
+              <i class="fa-solid fa-right-from-bracket"></i>
+            </button>
+          </div>
+        `;
+      }
+
+      // HIGHLIGHTER & ANNOTATIONS
+      setupScrollListener() {
+        window.addEventListener('scroll', () => {
+          if (this.activeView === 'reader') {
+            const totalH = document.documentElement.scrollHeight - window.innerHeight;
+            const percent = Math.min(100, Math.max(0, Math.round((window.scrollY / (totalH || 1)) * 100)));
+            document.getElementById('reading-progress-bar').style.width = `${percent}%`;
+          } else {
+            document.getElementById('reading-progress-bar').style.width = '0%';
+          }
+        });
+      }
+
+      dropBookmarkMarker() {
+        if (!this.activeReaderWork) return;
+        const totalH = document.documentElement.scrollHeight - window.innerHeight;
+        const percent = Math.min(100, Math.max(0, Math.round((window.scrollY / (totalH || 1)) * 100)));
+
+        this.userBookmarks[this.activeReaderWork.id] = {
+          chapterIndex: this.activeReaderChapterIndex,
+          scrollPercent: percent,
+          timestamp: new Date().toLocaleDateString(),
+          title: this.activeReaderWork.title
+        };
+
+        this.saveUserData();
+        this.showToast(`📌 Saved place marker at ${percent}%`);
+        this.checkContinueReadingBanner();
+      }
+
+      checkContinueReadingBanner() {
+        const keys = Object.keys(this.userBookmarks);
+        const banner = document.getElementById('continue-reading-banner');
+        if (keys.length > 0) {
+          const lastId = keys[keys.length - 1];
+          const bm = this.userBookmarks[lastId];
+          document.getElementById('continue-banner-title').innerText = bm.title;
+          document.getElementById('continue-banner-progress').innerText = `(${bm.scrollPercent}% progress)`;
+          banner.classList.remove('hidden');
+        } else {
+          banner.classList.add('hidden');
+        }
+      }
+
+      resumeActiveBookmark() {
+        const keys = Object.keys(this.userBookmarks);
+        if (keys.length > 0) this.navTo('reader', keys[keys.length - 1]);
+      }
+
+      setupSelectionListener() {
+        const floatingTb = document.getElementById('floating-hl-toolbar');
+        document.addEventListener('selectionchange', () => {
+          if (this.activeView !== 'reader') { floatingTb.classList.add('hidden'); return; }
+          const sel = window.getSelection();
+          if (sel && sel.toString().trim().length > 0) {
+            const range = sel.getRangeAt(0);
+            const rect = range.getBoundingClientRect();
+            if (rect.width > 0) {
+              floatingTb.style.top = `${window.scrollY + rect.top - 45}px`;
+              floatingTb.style.left = `${Math.max(10, rect.left + (rect.width/2) - 110)}px`;
+              floatingTb.classList.remove('hidden');
+              return;
+            }
+          }
+          floatingTb.classList.add('hidden');
+        });
+      }
+
+      applyHighlight(colorName) {
+        const sel = window.getSelection();
+        if (!sel || !this.activeReaderWork || !sel.toString().trim()) return;
+
+        const text = sel.toString().trim();
+        const hlObj = {
+          id: 'hl-' + Date.now(),
+          workId: this.activeReaderWork.id,
+          workTitle: this.activeReaderWork.title,
+          text: text,
+          color: colorName,
+          note: '',
+          date: new Date().toLocaleDateString()
+        };
+
+        this.userHighlights.push(hlObj);
+        this.saveUserData();
+
+        try {
+          const range = sel.getRangeAt(0);
+          const mark = document.createElement('mark');
+          mark.className = `hl-${colorName}`;
+          mark.innerText = text;
+          range.deleteContents();
+          range.insertNode(mark);
+        } catch(e) {}
+
+        sel.removeAllRanges();
+        document.getElementById('floating-hl-toolbar').classList.add('hidden');
+        document.getElementById('reader-highlights-count').innerText = `Notes (${this.getWorkHighlights(this.activeReaderWork.id).length})`;
+        this.showToast('Highlight added!');
+      }
+
+      promptHighlightNote() {
+        const sel = window.getSelection();
+        if (!sel || !this.activeReaderWork) return;
+        const note = prompt('Add margin annotation note:');
+        if (note !== null) {
+          this.applyHighlight('amber');
+          const lastHl = this.userHighlights[this.userHighlights.length - 1];
+          if (lastHl) lastHl.note = note;
+          this.saveUserData();
+        }
+      }
+
+      getWorkHighlights(workId) { return this.userHighlights.filter(h => h.workId === workId); }
+
+      applyStoredHighlightsToReader() {
+        if (!this.activeReaderWork) return;
+        const hls = this.getWorkHighlights(this.activeReaderWork.id);
+        const container = document.getElementById('reader-text-container');
+        let html = container.innerHTML;
+
+        hls.forEach(hl => {
+          if (html.includes(hl.text)) {
+            const markHtml = `<mark class="hl-${hl.color}" title="${hl.note ? 'Note: ' + hl.note : ''}">${hl.text}</mark>`;
+            html = html.replace(hl.text, markHtml);
+          }
+        });
+        container.innerHTML = html;
+      }
+
+      toggleAnnotationsDrawer() {
+        const modal = document.getElementById('annotations-drawer-modal');
+        const list = document.getElementById('annotations-list-container');
+        if (modal.classList.contains('hidden')) {
+          if (!this.activeReaderWork) return;
+          const hls = this.getWorkHighlights(this.activeReaderWork.id);
+          list.innerHTML = hls.length === 0 ? '<p class="text-xs text-[var(--color-muted)]">No highlights saved for this manuscript.</p>' :
+            hls.map(h => `
+              <div class="margin-surface p-3.5 rounded-2xl border text-xs space-y-2">
+                <div class="flex items-center justify-between">
+                  <span class="w-3 h-3 rounded-full bg-${h.color}-300 inline-block border"></span>
+                  <button onclick="app.deleteHighlight('${h.id}')" class="text-rose-500 hover:underline"><i class="fa-solid fa-trash"></i></button>
+                </div>
+                <blockquote class="italic text-[var(--color-text)]">"${h.text}"</blockquote>
+                ${h.note ? `<div class="p-2 rounded bg-amber-950/20 text-amber-600 dark:text-amber-300 border border-amber-800/40"><strong>Note:</strong> ${h.note}</div>` : ''}
+              </div>
+            `).join('');
+          modal.classList.remove('hidden');
+        } else {
+          modal.classList.add('hidden');
+        }
+      }
+
+      deleteHighlight(hlId) {
+        this.userHighlights = this.userHighlights.filter(h => h.id !== hlId);
+        this.saveUserData();
+        this.toggleAnnotationsDrawer();
+      }
+
+      toggleReaderTypographyPanel() { document.getElementById('reader-typography-panel').classList.toggle('hidden'); }
+
+      updateReaderTypography(prop, val) {
+        if (prop === 'font') document.documentElement.style.setProperty('--reader-font-family', val);
+        else if (prop === 'size') document.documentElement.style.setProperty('--reader-font-size', val);
+        else if (prop === 'lineHeight') document.documentElement.style.setProperty('--reader-line-height', val);
+        else if (prop === 'width') document.documentElement.style.setProperty('--reader-col-width', val);
+      }
+
+      // FILTER MANAGEMENT
+      toggleFilterDrawer() { document.getElementById('advanced-filter-drawer').classList.toggle('hidden'); }
+
+      addIncludeTag(tag) {
+        const canon = this.canonicalizeTag(tag);
+        if (!this.filters.includeTags.includes(canon)) {
+          this.filters.includeTags.push(canon);
+          this.renderFilterTagsUI();
+          this.renderFeed();
+        }
+      }
+
+      handleFilterTagAdd(e, type) {
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          const val = e.target.value.trim();
+          if (!val) return;
+          const canon = this.canonicalizeTag(val);
+          if (type === 'include' && !this.filters.includeTags.includes(canon)) this.filters.includeTags.push(canon);
+          else if (type === 'exclude' && !this.filters.excludeTags.includes(canon)) this.filters.excludeTags.push(canon);
+          e.target.value = '';
+          this.renderFilterTagsUI();
+          this.renderFeed();
+        }
+      }
+
+      removeFilterTag(tag, type) {
+        if (type === 'include') this.filters.includeTags = this.filters.includeTags.filter(t => t !== tag);
+        else this.filters.excludeTags = this.filters.excludeTags.filter(t => t !== tag);
+        this.renderFilterTagsUI();
+        this.renderFeed();
+      }
+
+      toggleIncludeMode() {
+        this.filters.includeMode = this.filters.includeMode === 'AND' ? 'OR' : 'AND';
+        document.getElementById('include-mode-btn').innerText = `Mode: ${this.filters.includeMode}`;
+        this.renderFeed();
+      }
+
+      renderFilterTagsUI() {
+        document.getElementById('include-tags-list').innerHTML = this.filters.includeTags.map(t => `
+          <span class="px-2 py-0.5 rounded-full bg-sky-950 text-sky-300 border border-sky-800 text-[11px] font-medium flex items-center space-x-1">
+            <span>#${t}</span>
+            <button onclick="app.removeFilterTag('${t}', 'include')" class="hover:text-white ml-1"><i class="fa-solid fa-xmark"></i></button>
+          </span>
+        `).join('');
+
+        document.getElementById('exclude-tags-list').innerHTML = this.filters.excludeTags.map(t => `
+          <span class="px-2 py-0.5 rounded-full bg-rose-950 text-rose-300 border border-rose-800 text-[11px] font-medium flex items-center space-x-1">
+            <span>#${t}</span>
+            <button onclick="app.removeFilterTag('${t}', 'exclude')" class="hover:text-white ml-1"><i class="fa-solid fa-xmark"></i></button>
+          </span>
+        `).join('');
+      }
+
+      resetAllFilters() {
+        this.filters.includeTags = [];
+        this.filters.excludeTags = [];
+        document.getElementById('feed-search-input').value = '';
+        document.getElementById('filter-min-words').value = '';
+        document.getElementById('filter-status-select').value = 'all';
+        this.renderFilterTagsUI();
+        this.renderFeed();
+      }
+
+      // SETTINGS MODAL
+      openSettingsModal() {
+        document.getElementById('settings-hub-modal').classList.remove('hidden');
+        this.renderSettingsMutedTags();
+        this.renderSettingsPseuds();
+      }
+
+      closeSettingsModal() { document.getElementById('settings-hub-modal').classList.add('hidden'); }
+
+      switchSettingsTab(tabName) {
+        ['appearance', 'filters', 'pseuds', 'portability'].forEach(t => {
+          document.getElementById(`stab-content-${t}`).classList.add('hidden');
+          const btn = document.getElementById(`stab-btn-${t}`);
+          btn.classList.remove('border-[var(--color-primary)]', 'text-[var(--color-primary)]');
+          btn.classList.add('border-transparent', 'text-[var(--color-muted)]');
+        });
+
+        document.getElementById(`stab-content-${tabName}`).classList.remove('hidden');
+        const activeBtn = document.getElementById(`stab-btn-${tabName}`);
+        activeBtn.classList.remove('border-transparent', 'text-[var(--color-muted)]');
+        activeBtn.classList.add('border-[var(--color-primary)]', 'text-[var(--color-primary)]');
+      }
+
+      addPermanentMutedTag() {
+        if (!this.currentUser) return;
+        const input = document.getElementById('add-muted-tag-input');
+        const tag = this.canonicalizeTag(input.value.trim());
+        if (!this.currentUser.mutedTags) this.currentUser.mutedTags = [];
+        if (tag && !this.currentUser.mutedTags.includes(tag)) {
+          this.currentUser.mutedTags.push(tag);
+          input.value = '';
+          this.saveUserData();
+          this.renderSettingsMutedTags();
+          this.renderFeed();
+          this.showToast(`Muted tag #${tag}`);
+        }
+      }
+
+      removeMutedTag(tag) {
+        if (!this.currentUser || !this.currentUser.mutedTags) return;
+        this.currentUser.mutedTags = this.currentUser.mutedTags.filter(t => t !== tag);
+        this.saveUserData();
+        this.renderSettingsMutedTags();
+        this.renderFeed();
+      }
+
+      renderSettingsMutedTags() {
+        const muted = (this.currentUser && this.currentUser.mutedTags) ? this.currentUser.mutedTags : [];
+        document.getElementById('settings-muted-tags-list').innerHTML = muted.map(t => `
+          <span class="px-2.5 py-1 rounded-full bg-rose-950 text-rose-300 border border-rose-800 text-xs font-medium flex items-center space-x-1">
+            <span>#${t}</span>
+            <button onclick="app.removeMutedTag('${t}')" class="hover:text-white ml-1"><i class="fa-solid fa-xmark"></i></button>
+          </span>
+        `).join('');
+      }
+
+      addNewPseud() {
+        if (!this.currentUser) return;
+        const input = document.getElementById('add-pseud-input');
+        const pName = input.value.trim();
+        if (!this.currentUser.pseuds) this.currentUser.pseuds = [this.currentUser.username];
+        if (pName && !this.currentUser.pseuds.includes(pName)) {
+          this.currentUser.pseuds.push(pName);
+          input.value = '';
+          this.saveUserData();
+          this.renderSettingsPseuds();
+          this.showToast(`Pen name "${pName}" added`);
+        }
+      }
+
+      renderSettingsPseuds() {
+        const pseuds = (this.currentUser && this.currentUser.pseuds) ? this.currentUser.pseuds : [];
+        document.getElementById('settings-pseuds-list').innerHTML = pseuds.map(p => `
+          <div class="flex justify-between items-center p-2.5 rounded-xl border border-[var(--color-border)]">
+            <span class="font-bold">${p}</span>
+            <span class="text-[10px] px-2 py-0.5 rounded bg-black/10 dark:bg-white/10">Pseud</span>
+          </div>
+        `).join('');
+      }
+
+      // JSON EXPORT / IMPORT
+      exportArchiveJSON() {
+        const payload = {
+          version: '3.0-margin',
+          exportedAt: new Date().toISOString(),
+          works: this.works,
+          accounts: this.accounts,
+          bookmarks: this.userBookmarks,
+          highlights: this.userHighlights
+        };
+        const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `margin_archive_export_${Date.now()}.json`;
+        a.click();
+        URL.revokeObjectURL(url);
+        this.showToast('Full archive JSON exported');
+      }
+
+      importArchiveJSON(e) {
+        const file = e.target.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = (ev) => {
+          try {
+            const data = JSON.parse(ev.target.result);
+            if (data.works) { this.works = data.works; this.saveWorks(); }
+            if (data.accounts) this.accounts = data.accounts;
+            if (data.bookmarks) this.userBookmarks = data.bookmarks;
+            if (data.highlights) this.userHighlights = data.highlights;
+            this.saveUserData();
+            this.checkAuthGate();
+            this.renderFeed();
+            this.closeSettingsModal();
+            this.showToast('Archive JSON imported!');
+          } catch(err) {
+            alert('Invalid JSON archive format.');
+          }
+        };
+        reader.readAsText(file);
+      }
+
+      showToast(msg) {
+        const container = document.getElementById('toast-container');
+        const toast = document.createElement('div');
+        toast.className = 'margin-surface text-[var(--color-text)] text-xs px-4 py-3 rounded-2xl shadow-2xl flex items-center space-x-2 border border-[var(--color-border)] transition-all transform translate-y-2 opacity-0';
+        toast.innerHTML = `<i class="fa-solid fa-circle-check text-[var(--color-primary)]"></i><span>${msg}</span>`;
+        container.appendChild(toast);
+        setTimeout(() => toast.classList.remove('translate-y-2', 'opacity-0'), 10);
+        setTimeout(() => {
+          toast.classList.add('opacity-0', 'translate-y-2');
+          setTimeout(() => toast.remove(), 300);
+        }, 3000);
+      }
+    }
+
+    let app;
+    window.addEventListener('DOMContentLoaded', () => { app = new MarginApp(); });
+  </script>
+</body>
+</html>
